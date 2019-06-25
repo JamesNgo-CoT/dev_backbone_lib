@@ -1,3 +1,7 @@
+/* global $ */
+
+////////////////////////////////////////////////////////////////////////////////
+
 /* exported toQueryString */
 function toQueryString(queryObject) {
   if (Array.isArray(queryObject)) {
@@ -11,7 +15,7 @@ function toQueryString(queryObject) {
   if (typeof queryObject === 'object' && queryObject !== null) {
     const array = [];
     for (const key in queryObject) {
-      if (queryObject.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(queryObject, key)) {
         array.push(`${key}=${encodeURIComponent(toQueryString(queryObject[key]))}`);
       }
     }
@@ -83,6 +87,8 @@ function toQueryObject(queryString) {
   }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 /* exported escapeODataValue */
 function escapeODataValue(str) {
   return str
@@ -98,6 +104,8 @@ function escapeODataValue(str) {
     .replace(/\]/g, "%5D")
     .replace(/\s/g, "%20");
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 /* exported swapView */
 function swapView(element, oldView, newView) {
@@ -128,6 +136,8 @@ function ajax(options) {
       });
   });
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 /* exported adjustArgs */
 const adjustArgs = (...args) => {

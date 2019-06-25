@@ -1,3 +1,5 @@
+/* global Backbone */
+
 /* exported BaseView */
 class BaseView extends Backbone.View {
   preinitialize(options = {}) {

@@ -1,3 +1,4 @@
+/* global _ */
 /* global BaseModel */
 
 /* exported AuthModel */
@@ -5,9 +6,9 @@ class AuthModel extends BaseModel {
   preinitialize(attributes, options = {}) {
     this.app = options.app || this.app;
 
-    this.idAttribute = options.idAttribute || 'sid';
-
     super.preinitialize(attributes, options);
+
+    this.idAttribute = options.idAttribute || 'sid';
   }
 
   initialize(attributes, options) {

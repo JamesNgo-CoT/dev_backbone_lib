@@ -1,3 +1,4 @@
+/* global _ $ */
 /* global CotForm BaseView AlertModel AlertView */
 
 /* exported FormView */

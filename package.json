@@ -16,5 +16,15 @@
   "bugs": {
     "url": "https://github.com/JamesNgo-CoT/dev_backbone_lib/issues"
   },
-  "homepage": "https://github.com/JamesNgo-CoT/dev_backbone_lib#readme"
+  "homepage": "https://github.com/JamesNgo-CoT/dev_backbone_lib#readme",
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "del": "^4.1.1",
+    "eslint": "^6.0.1",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-eslint": "^5.0.0"
+  },
+  "dependencies": {}
 }

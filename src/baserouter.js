@@ -1,3 +1,5 @@
+/* global _ Backbone */
+
 /* exported BaseRouter */
 class BaseRouter extends Backbone.Router {
   preinitialize(options = {}) {

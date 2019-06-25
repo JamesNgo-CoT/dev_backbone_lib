@@ -1,38 +1,28 @@
-/* global BaseModel */
+/* global _ Backbone */
 
-/* exported BaseCollection */
-class BaseCollection extends Backbone.Collection {
-  preinitialize(models, options = {}) {
-    this.model = options.model || this.model;
-
-    this.url = options.url || this.url;
+/* exported BaseModel */
+class BaseModel extends Backbone.Model {
+  preinitialize(attributes, options = {}) {
+    this.urlRoot = options.urlRoot || this.urlRoot;
 
     this.authModel = options.authModel || this.authModel;
 
     this.webStorage = options.webStorage || this.webStorage;
     this.webStorageKey = options.webStorageKey || this.webStorageKey;
 
-    super.preinitialize(models, options);
+    this.idAttribute = options.idAttribute || 'id';
+
+    super.preinitialize(attributes, options);
   }
 
-  model(attributes, options) {
-    return new BaseModel(attributes, options);
-  }
-
-  fetch(options) {
-    if (options && options.query) {
-      options.url = `${_.result(this, 'url')}?${options.query}`;
+  url() {
+    if (this.isNew()) {
+      return typeof super.url === 'function' ? super.url() : super.url;
     }
 
-    return super.fetch(options);
-  }
-
-  parse(response, options) {
-    if (response && Array.isArray(response.value)) {
-      response = response.value;
-    }
-
-    return super.parse(response, options);
+    const base = _.result(this, 'urlRoot') || _.result(this.collection, 'url');
+    const id = this.get(this.idAttribute);
+    return `${base.replace(/\/$/, '')}('${encodeURIComponent(id)}')`;
   }
 
   webStorage() {

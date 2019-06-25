@@ -1,4 +1,5 @@
 /* global escapeODataValue */
+/* global _ $ Backbone */
 /* global BaseView */
 
 /* exported DatatableView */

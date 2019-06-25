@@ -29,6 +29,8 @@ if (window.cot_app) {
   };
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 if (window.cot_form) {
   const originalAddformfield = window.cot_form.prototype.addformfield;
   window.cot_form.prototype.addformfield = function (fieldDefinition, fieldContainer) {
@@ -65,6 +67,8 @@ if (window.cot_form) {
     return returnValue;
   };
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 if (window.CotForm) {
   const originalRender = window.CotForm.prototype.render;
