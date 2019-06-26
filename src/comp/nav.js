@@ -16,8 +16,8 @@ class NavItemModel extends BaseModel {
 /* exported NavItemView */
 class NavItemView extends BaseView {
   preinitialize(options = {}) {
-    options.tagName = options.tagName || 'li';
-    options.attributes = options.attributes || { role: 'presentation' };
+    this.tagName = options.tagName || this.tagName;
+    this.attributes = options.attributes || this.attributes;
 
     super.preinitialize(options);
   }
@@ -28,6 +28,14 @@ class NavItemView extends BaseView {
     });
 
     super.initialize(options);
+  }
+
+  tagName() {
+    return 'li';
+  }
+
+  attributes() {
+    return { role: 'presentation' };
   }
 
   render() {
@@ -92,7 +100,7 @@ class NavCollection extends BaseCollection {
 /* exported NavView */
 class NavView extends BaseView {
   preinitialize(options = {}) {
-    this.attributes = options.attributes || { role: 'navigation' };
+    this.attributes = options.attributes || this.attributes;
 
     this.navItemView = options.navItemView || this.navItemView;
 
@@ -107,6 +115,10 @@ class NavView extends BaseView {
     });
 
     super.initialize(options);
+  }
+
+  attributes() {
+    return { role: 'navigation' };
   }
 
   removeNavItems() {

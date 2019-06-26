@@ -70,10 +70,8 @@ function (_BaseView) {
     key: "preinitialize",
     value: function preinitialize() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      options.tagName = options.tagName || 'li';
-      options.attributes = options.attributes || {
-        role: 'presentation'
-      };
+      this.tagName = options.tagName || this.tagName;
+      this.attributes = options.attributes || this.attributes;
 
       _get(_getPrototypeOf(NavItemView.prototype), "preinitialize", this).call(this, options);
     }
@@ -87,6 +85,18 @@ function (_BaseView) {
       });
 
       _get(_getPrototypeOf(NavItemView.prototype), "initialize", this).call(this, options);
+    }
+  }, {
+    key: "tagName",
+    value: function tagName() {
+      return 'li';
+    }
+  }, {
+    key: "attributes",
+    value: function attributes() {
+      return {
+        role: 'presentation'
+      };
     }
   }, {
     key: "render",
@@ -206,9 +216,7 @@ function (_BaseView2) {
     key: "preinitialize",
     value: function preinitialize() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      this.attributes = options.attributes || {
-        role: 'navigation'
-      };
+      this.attributes = options.attributes || this.attributes;
       this.navItemView = options.navItemView || this.navItemView;
       this.navItems = [];
 
@@ -224,6 +232,13 @@ function (_BaseView2) {
       });
 
       _get(_getPrototypeOf(NavView.prototype), "initialize", this).call(this, options);
+    }
+  }, {
+    key: "attributes",
+    value: function attributes() {
+      return {
+        role: 'navigation'
+      };
     }
   }, {
     key: "removeNavItems",
