@@ -106,10 +106,10 @@ function (_BaseView) {
       var innerMessageElement = this.el.appendChild(document.createElement('div'));
       var message = this.model.get('message');
 
-      if (typeof message === 'string') {
-        innerMessageElement.innerHTML = message;
-      } else {
+      if (message instanceof HTMLElement) {
         innerMessageElement.appendChild(message);
+      } else {
+        innerMessageElement.innerHTML = message;
       }
 
       _get(_getPrototypeOf(AlertView.prototype), "render", this).call(this);

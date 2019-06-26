@@ -48,10 +48,10 @@ class AlertView extends BaseView {
 
     const innerMessageElement = this.el.appendChild(document.createElement('div'));
     const message = this.model.get('message');
-    if (typeof message === 'string') {
-      innerMessageElement.innerHTML = message;
-    } else {
+    if (message instanceof HTMLElement) {
       innerMessageElement.appendChild(message);
+    } else {
+      innerMessageElement.innerHTML = message;
     }
 
 
