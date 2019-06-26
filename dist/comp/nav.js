@@ -45,7 +45,8 @@ function (_BaseModel) {
         title: 'Untitled',
         fragment: '',
         isActive: false,
-        isVisible: true
+        isVisible: true,
+        requiresLogin: false
       };
     }
   }]);
@@ -268,24 +269,34 @@ function (_BaseView2) {
 
       var wrapper = this.el.appendChild(document.createElement('ul'));
       wrapper.classList.add('nav', 'nav-tabs');
-      this.collection.each(function (model) {
-        var navItemView = typeof _this4.navItemView === 'function' ? _this4.navItemView({
-          model: model
-        }) : new _this4.navItemView({
-          model: model
-        });
-        wrapper.appendChild(navItemView.el);
-        navItemView.render();
 
-        _this4.navItems.push(navItemView);
+      var authModel = _.result(this, 'authModel');
+
+      this.collection.each(function (model) {
+        var navItemView;
+
+        if (model.get('requiresLogin')) {
+          if (authModel) {
+            navItemView = new AuthyNavItemView({
+              model: model,
+              authModel: authModel
+            });
+          }
+        } else {
+          navItemView = new NavItemView({
+            model: model
+          });
+        }
+
+        if (navItemView) {
+          wrapper.appendChild(navItemView.el);
+          navItemView.render();
+
+          _this4.navItems.push(navItemView);
+        }
       });
 
       _get(_getPrototypeOf(NavView.prototype), "render", this).call(this);
-    }
-  }, {
-    key: "navItemView",
-    value: function navItemView(options) {
-      return new NavItemView(options);
     }
   }]);
 

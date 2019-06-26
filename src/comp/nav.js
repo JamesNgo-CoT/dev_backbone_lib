@@ -8,7 +8,8 @@ class NavItemModel extends BaseModel {
       title: 'Untitled',
       fragment: '',
       isActive: false,
-      isVisible: true
+      isVisible: true,
+      requiresLogin: false
     };
   }
 }
@@ -140,18 +141,23 @@ class NavView extends BaseView {
     const wrapper = this.el.appendChild(document.createElement('ul'));
     wrapper.classList.add('nav', 'nav-tabs');
 
+    const authModel = _.result(this, 'authModel');
     this.collection.each(model => {
-      const navItemView = typeof this.navItemView === 'function'
-        ? this.navItemView({ model }) : new this.navItemView({ model });
-      wrapper.appendChild(navItemView.el);
-      navItemView.render();
-      this.navItems.push(navItemView);
+      let navItemView;
+      if (model.get('requiresLogin')) {
+        if (authModel) {
+          navItemView = new AuthyNavItemView({ model, authModel });
+        }
+      } else {
+        navItemView = new NavItemView({ model });
+      }
+      if (navItemView) {
+        wrapper.appendChild(navItemView.el);
+        navItemView.render();
+        this.navItems.push(navItemView);
+      }
     });
 
     super.render();
-  }
-
-  navItemView(options) {
-    return new NavItemView(options);
   }
 }
