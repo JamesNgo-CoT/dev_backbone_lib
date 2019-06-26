@@ -54,7 +54,10 @@ class AlertView extends BaseView {
       innerMessageElement.innerHTML = message;
     }
 
-
     super.render();
+  }
+
+  close() {
+    this.el.querySelector('button[data-dismiss="alert"]').click();
   }
 }

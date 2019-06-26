@@ -114,6 +114,11 @@ function (_BaseView) {
 
       _get(_getPrototypeOf(AlertView.prototype), "render", this).call(this);
     }
+  }, {
+    key: "close",
+    value: function close() {
+      this.el.querySelector('button[data-dismiss="alert"]').click();
+    }
   }]);
 
   return AlertView;
