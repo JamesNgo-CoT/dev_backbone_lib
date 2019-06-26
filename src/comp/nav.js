@@ -15,7 +15,7 @@ class NavItemModel extends BaseModel {
 
 /* exported NavItemView */
 class NavItemView extends BaseView {
-  preinitialize(options) {
+  preinitialize(options = {}) {
     options.tagName = options.tagName || 'li';
     options.attributes = options.attributes || { role: 'presentation' };
 

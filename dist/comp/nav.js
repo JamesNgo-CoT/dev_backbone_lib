@@ -68,7 +68,8 @@ function (_BaseView) {
 
   _createClass(NavItemView, [{
     key: "preinitialize",
-    value: function preinitialize(options) {
+    value: function preinitialize() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       options.tagName = options.tagName || 'li';
       options.attributes = options.attributes || {
         role: 'presentation'
