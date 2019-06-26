@@ -15,9 +15,9 @@ function buildJs() {
     .pipe(gulp.dest('./dist/'));
 }
 
-function buildScss() {
-  return gulp.src('./src/**/*.scss', { since: gulp.lastRun(buildScss) })
+function copyScss() {
+  return gulp.src('./src/**/*.scss', { since: gulp.lastRun(copyScss) })
     .pipe(gulp.dest('./dist/'));
 }
 
-exports.default = gulp.series(cleanup, gulp.parallel(buildJs, buildScss));
+exports.default = gulp.series(cleanup, gulp.parallel(buildJs, copyScss));
