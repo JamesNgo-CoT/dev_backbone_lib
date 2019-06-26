@@ -53,6 +53,7 @@ function (_Backbone$Collection) {
   }, {
     key: "model",
     value: function model(attributes, options) {
+      // NOTE Backbone.Collection does not use model function without a prototype
       return new BaseModel(attributes, options);
     }
   }, {
