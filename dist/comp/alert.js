@@ -104,7 +104,13 @@ function (_BaseView) {
       messageElementButtonTimes.setAttribute('aria-hidden', 'true');
       messageElementButtonTimes.innerHTML = '&times;';
       var innerMessageElement = this.el.appendChild(document.createElement('div'));
-      innerMessageElement.innerHTML = this.model.get('message');
+      var message = this.model.get('message');
+
+      if (typeof message === 'string') {
+        innerMessageElement.innerHTML = message;
+      } else {
+        innerMessageElement.appendChild(message);
+      }
 
       _get(_getPrototypeOf(AlertView.prototype), "render", this).call(this);
     }

@@ -47,7 +47,13 @@ class AlertView extends BaseView {
     messageElementButtonTimes.innerHTML = '&times;';
 
     const innerMessageElement = this.el.appendChild(document.createElement('div'));
-    innerMessageElement.innerHTML = this.model.get('message');
+    const message = this.model.get('message');
+    if (typeof message === 'string') {
+      innerMessageElement.innerHTML = message;
+    } else {
+      innerMessageElement.appendChild(message);
+    }
+
 
     super.render();
   }
