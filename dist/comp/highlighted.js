@@ -75,7 +75,17 @@ function (_BaseView) {
   }, {
     key: "render",
     value: function render() {
-      this.el.innerHTML = this.model.get('content');
+      while (this.el.firstChild) {
+        this.removeChild(this.el.firstChild);
+      }
+
+      var content = this.model.get('content');
+
+      if (content instanceof HTMLElement) {
+        this.el.appendChild(content);
+      } else {
+        this.el.innerHTML = this.model.get('content');
+      }
 
       _get(_getPrototypeOf(HighlightedView.prototype), "render", this).call(this);
     }
