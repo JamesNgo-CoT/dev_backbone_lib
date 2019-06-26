@@ -101,6 +101,16 @@ function (_BaseView) {
       })) : '';
       return "".concat(loginFragment).concat(query);
     }
+  }, {
+    key: "hide",
+    value: function hide() {
+      this.el.classList.add('hide');
+    }
+  }, {
+    key: "show",
+    value: function show() {
+      this.el.classList.remove('hide');
+    }
   }]);
 
   return LoginButtonView;

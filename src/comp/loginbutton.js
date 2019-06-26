@@ -47,4 +47,12 @@ class LoginButtonView extends BaseView {
     const query = Backbone.History.started ? `?${toQueryString({ redirect: Backbone.history.getFragment() })}` : '';
     return `${loginFragment}${query}`;
   }
+
+  hide() {
+    this.el.classList.add('hide');
+  }
+
+  show() {
+    this.el.classList.remove('hide');
+  }
 }
