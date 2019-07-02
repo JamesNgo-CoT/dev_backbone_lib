@@ -68,4 +68,19 @@ class AuthModel extends BaseModel {
   isLoggedIn() {
     return !this.isNew();
   }
+
+  authentication() {
+    return new Promise((resolve, reject) => {
+      if (!this.isLoggedIn()) {
+        resolve(false);
+      } else {
+        this.fetch()
+          .then(() => {
+            resolve(this.isLoggedIn());
+          }, (error) => {
+            reject(error);
+          });
+      }
+    });
+  }
 }

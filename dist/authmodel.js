@@ -132,6 +132,23 @@ function (_BaseModel) {
     value: function isLoggedIn() {
       return !this.isNew();
     }
+  }, {
+    key: "authentication",
+    value: function authentication() {
+      var _this3 = this;
+
+      return new Promise(function (resolve, reject) {
+        if (!_this3.isLoggedIn()) {
+          resolve(false);
+        } else {
+          _this3.fetch().then(function () {
+            resolve(_this3.isLoggedIn());
+          }, function (error) {
+            reject(error);
+          });
+        }
+      });
+    }
   }]);
 
   return AuthModel;
