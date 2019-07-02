@@ -134,14 +134,14 @@ function (_BaseModel) {
     }
   }, {
     key: "authentication",
-    value: function authentication() {
+    value: function authentication(options) {
       var _this3 = this;
 
       return new Promise(function (resolve, reject) {
         if (!_this3.isLoggedIn()) {
           resolve(false);
         } else {
-          _this3.fetch().then(function () {
+          _this3.fetch(options).then(function () {
             resolve(_this3.isLoggedIn());
           }, function (error) {
             reject(error);
