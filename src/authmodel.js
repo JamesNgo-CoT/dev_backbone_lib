@@ -18,7 +18,7 @@ class AuthModel extends BaseModel {
       } else {
         this.webStorageDestroy();
       }
-    })
+    });
 
     this.webStorageFetch();
     if (!this.isNew()) {

@@ -40,7 +40,7 @@ function (_BaseModel) {
     key: "defaults",
     value: function defaults() {
       return {
-        content: '<p>HTML CONTENT</p>'
+        content: 'HIGHLIGHTED CONTENT'
       };
     }
   }]);
@@ -81,10 +81,10 @@ function (_BaseView) {
 
       var content = this.model.get('content');
 
-      if (content instanceof HTMLElement) {
-        this.el.appendChild(content);
+      if (typeof content === 'string') {
+        this.el.innerHTML = content;
       } else {
-        this.el.innerHTML = this.model.get('content');
+        this.el.appendChild(content);
       }
 
       _get(_getPrototypeOf(HighlightedView.prototype), "render", this).call(this);

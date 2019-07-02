@@ -40,7 +40,7 @@ function (_BaseModel) {
     key: "defaults",
     value: function defaults() {
       return {
-        message: '<p>MESSAGE</p>'
+        message: 'MESSAGE'
       };
     }
   }]);
@@ -65,9 +65,7 @@ function (_BaseView) {
     key: "preinitialize",
     value: function preinitialize() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      this.attributes = options.attributes || {
-        role: 'alert'
-      };
+      this.attributes = options.attributes || this.attributes;
 
       _get(_getPrototypeOf(AlertView.prototype), "preinitialize", this).call(this, options);
     }
@@ -88,6 +86,13 @@ function (_BaseView) {
       return 'alert-danger';
     }
   }, {
+    key: "attributes",
+    value: function attributes() {
+      return {
+        role: 'alert'
+      };
+    }
+  }, {
     key: "render",
     value: function render() {
       while (this.el.firstChild) {
@@ -106,10 +111,10 @@ function (_BaseView) {
       var innerMessageElement = this.el.appendChild(document.createElement('div'));
       var message = this.model.get('message');
 
-      if (message instanceof HTMLElement) {
-        innerMessageElement.appendChild(message);
-      } else {
+      if (typeof message === 'string') {
         innerMessageElement.innerHTML = message;
+      } else {
+        innerMessageElement.appendChild(message);
       }
 
       _get(_getPrototypeOf(AlertView.prototype), "render", this).call(this);

@@ -4,7 +4,7 @@
 class AlertModel extends BaseModel {
   defaults() {
     return {
-      message: '<p>MESSAGE</p>'
+      message: 'MESSAGE'
     }
   }
 }
@@ -12,7 +12,7 @@ class AlertModel extends BaseModel {
 /* exported AlertView */
 class AlertView extends BaseView {
   preinitialize(options = {}) {
-    this.attributes = options.attributes || { role: 'alert' };
+    this.attributes = options.attributes || this.attributes;
 
     super.preinitialize(options);
   }
@@ -27,6 +27,10 @@ class AlertView extends BaseView {
 
   className() {
     return 'alert-danger';
+  }
+
+  attributes() {
+    return { role: 'alert' };
   }
 
   render() {
@@ -48,10 +52,10 @@ class AlertView extends BaseView {
 
     const innerMessageElement = this.el.appendChild(document.createElement('div'));
     const message = this.model.get('message');
-    if (message instanceof HTMLElement) {
-      innerMessageElement.appendChild(message);
-    } else {
+    if (typeof message === 'string') {
       innerMessageElement.innerHTML = message;
+    } else {
+      innerMessageElement.appendChild(message);
     }
 
     super.render();

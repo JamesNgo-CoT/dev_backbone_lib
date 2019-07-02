@@ -4,7 +4,7 @@
 class HighlightedModel extends BaseModel {
   defaults() {
     return {
-      content: '<p>HTML CONTENT</p>'
+      content: 'HIGHLIGHTED CONTENT'
     };
   }
 }
@@ -25,10 +25,10 @@ class HighlightedView extends BaseView {
     }
 
     const content = this.model.get('content');
-    if (content instanceof HTMLElement) {
-      this.el.appendChild(content);
+    if (typeof content === 'string') {
+      this.el.innerHTML = content;
     } else {
-      this.el.innerHTML = this.model.get('content');
+      this.el.appendChild(content);
     }
 
     super.render();
