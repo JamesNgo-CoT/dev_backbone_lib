@@ -4,9 +4,13 @@
 /* exported FormView */
 class FormView extends BaseView {
   static get uniqueId() {
+    console.log('UNIQUE ID');
+
     if (FormView._uniqueId == null) {
       FormView._uniqueId = 0;
     }
+
+    console.log(FormView._uniqueId);
 
     return `FormView_${FormView._uniqueId++}`;
   }

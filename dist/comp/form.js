@@ -114,10 +114,13 @@ function (_BaseView) {
   }], [{
     key: "uniqueId",
     get: function get() {
+      console.log('UNIQUE ID');
+
       if (FormView._uniqueId == null) {
         FormView._uniqueId = 0;
       }
 
+      console.log(FormView._uniqueId);
       return "FormView_".concat(FormView._uniqueId++);
     }
   }]);
