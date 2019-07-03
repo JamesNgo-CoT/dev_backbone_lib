@@ -21,7 +21,7 @@ class FormView extends BaseView {
     }
 
     const formDefinition = _.result(this, 'formDefinition');
-
+    formDefinition.id = _.result(formDefinition, 'id') || this.model.cid;
     formDefinition.rootPath = _.result(formDefinition, 'rootPath') || _.result(this, 'rootPath');
     formDefinition.useBinding = true;
 
