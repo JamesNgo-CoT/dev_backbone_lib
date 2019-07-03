@@ -62,7 +62,7 @@ function (_BaseView) {
 
       var formDefinition = _.result(this, 'formDefinition');
 
-      formDefinition.id = _.result(formDefinition, 'id') || FormView._uniqueId;
+      formDefinition.id = _.result(formDefinition, 'id') || FormView.uniqueId;
       formDefinition.rootPath = _.result(formDefinition, 'rootPath') || _.result(this, 'rootPath');
       formDefinition.useBinding = true;
 
@@ -114,13 +114,10 @@ function (_BaseView) {
   }], [{
     key: "uniqueId",
     get: function get() {
-      console.log('UNIQUE ID');
-
       if (FormView._uniqueId == null) {
         FormView._uniqueId = 0;
       }
 
-      console.log(FormView._uniqueId);
       return "FormView_".concat(FormView._uniqueId++);
     }
   }]);

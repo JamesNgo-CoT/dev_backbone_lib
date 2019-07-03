@@ -4,13 +4,9 @@
 /* exported FormView */
 class FormView extends BaseView {
   static get uniqueId() {
-    console.log('UNIQUE ID');
-
     if (FormView._uniqueId == null) {
       FormView._uniqueId = 0;
     }
-
-    console.log(FormView._uniqueId);
 
     return `FormView_${FormView._uniqueId++}`;
   }
@@ -33,7 +29,7 @@ class FormView extends BaseView {
     }
 
     const formDefinition = _.result(this, 'formDefinition');
-    formDefinition.id = _.result(formDefinition, 'id') || FormView._uniqueId;
+    formDefinition.id = _.result(formDefinition, 'id') || FormView.uniqueId;
     formDefinition.rootPath = _.result(formDefinition, 'rootPath') || _.result(this, 'rootPath');
     formDefinition.useBinding = true;
 
