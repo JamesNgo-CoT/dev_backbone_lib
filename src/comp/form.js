@@ -3,6 +3,14 @@
 
 /* exported FormView */
 class FormView extends BaseView {
+  static get uniqueId() {
+    if (FormView._uniqueId == null) {
+      FormView._uniqueId = 0;
+    }
+
+    return `FormView_${FormView._uniqueId++}`;
+  }
+
   preinitialize(options = {}) {
     this.formDefinition = options.formDefinition || this.formDefinition;
     this.rootPath = options.rootPath || this.rootPath;
@@ -21,7 +29,7 @@ class FormView extends BaseView {
     }
 
     const formDefinition = _.result(this, 'formDefinition');
-    formDefinition.id = _.result(formDefinition, 'id') || this.model.cid;
+    formDefinition.id = _.result(formDefinition, 'id') || FormView._uniqueId;
     formDefinition.rootPath = _.result(formDefinition, 'rootPath') || _.result(this, 'rootPath');
     formDefinition.useBinding = true;
 

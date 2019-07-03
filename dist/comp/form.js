@@ -62,7 +62,7 @@ function (_BaseView) {
 
       var formDefinition = _.result(this, 'formDefinition');
 
-      formDefinition.id = _.result(formDefinition, 'id') || this.model.cid;
+      formDefinition.id = _.result(formDefinition, 'id') || FormView._uniqueId;
       formDefinition.rootPath = _.result(formDefinition, 'rootPath') || _.result(this, 'rootPath');
       formDefinition.useBinding = true;
 
@@ -110,6 +110,15 @@ function (_BaseView) {
       });
       parentNode.insertBefore(alertView.el, parentNode.firstChild);
       alertView.render();
+    }
+  }], [{
+    key: "uniqueId",
+    get: function get() {
+      if (FormView._uniqueId == null) {
+        FormView._uniqueId = 0;
+      }
+
+      return "FormView_".concat(FormView._uniqueId++);
     }
   }]);
 
