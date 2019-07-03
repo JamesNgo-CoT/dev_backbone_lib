@@ -61,9 +61,8 @@ function (_BaseView) {
     value: function removeDatatable() {
       if (this.datatable) {
         this.datatable.destroy();
+        this.datatable = null;
       }
-
-      this.datatable = null;
     }
   }, {
     key: "remove",

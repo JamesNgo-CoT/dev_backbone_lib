@@ -19,9 +19,8 @@ class LoginDialogView extends DialogView {
   removeLoginFormView() {
     if (this.loginFormView) {
       this.loginFormView.remove();
+      this.loginFormView = null;
     }
-
-    this.loginFormView = null;
   }
 
   remove() {
