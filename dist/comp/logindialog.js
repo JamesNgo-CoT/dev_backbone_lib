@@ -45,6 +45,8 @@ function (_DialogView) {
       if (this.loginFormView) {
         this.loginFormView.remove();
       }
+
+      this.loginFormView = null;
     }
   }, {
     key: "remove",

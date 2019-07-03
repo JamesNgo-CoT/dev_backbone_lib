@@ -20,6 +20,8 @@ class LoginDialogView extends DialogView {
     if (this.loginFormView) {
       this.loginFormView.remove();
     }
+
+    this.loginFormView = null;
   }
 
   remove() {

@@ -23,6 +23,8 @@ class DatatableView extends BaseView {
     if (this.datatable) {
       this.datatable.destroy();
     }
+
+    this.datatable = null;
   }
 
   remove() {

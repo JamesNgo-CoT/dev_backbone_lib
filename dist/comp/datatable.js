@@ -62,6 +62,8 @@ function (_BaseView) {
       if (this.datatable) {
         this.datatable.destroy();
       }
+
+      this.datatable = null;
     }
   }, {
     key: "remove",
