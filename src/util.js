@@ -99,7 +99,6 @@ function escapeODataValue(str) {
     .replace(/\?/g, "%3F")
     .replace(/#/g, "%23")
     .replace(/&/g, "%26")
-    .replace(/&/g, "%26")
     .replace(/\[/g, "%5B")
     .replace(/\]/g, "%5D")
     .replace(/\s/g, "%20");

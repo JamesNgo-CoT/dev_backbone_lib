@@ -118,7 +118,7 @@ function toQueryObject(queryString) {
 
 
 function escapeODataValue(str) {
-  return str.replace(/'/g, "''").replace(/%/g, "%25").replace(/\+/g, "%2B").replace(/\//g, "%2F").replace(/\?/g, "%3F").replace(/#/g, "%23").replace(/&/g, "%26").replace(/&/g, "%26").replace(/\[/g, "%5B").replace(/\]/g, "%5D").replace(/\s/g, "%20");
+  return str.replace(/'/g, "''").replace(/%/g, "%25").replace(/\+/g, "%2B").replace(/\//g, "%2F").replace(/\?/g, "%3F").replace(/#/g, "%23").replace(/&/g, "%26").replace(/\[/g, "%5B").replace(/\]/g, "%5D").replace(/\s/g, "%20");
 } ////////////////////////////////////////////////////////////////////////////////
 
 /* exported swapView */
