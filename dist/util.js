@@ -124,7 +124,7 @@ function escapeODataValue(str) {
 /* exported swapView */
 
 
-function swapView(element, oldView, newView) {
+function swapView(element, newView, oldView) {
   element.style.height = getComputedStyle(element).height;
   element.style.overflow = 'hidden';
 
