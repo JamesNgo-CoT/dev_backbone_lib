@@ -53,7 +53,7 @@ class BaseRouter extends Backbone.Router {
     let cleanupFunctionReturnValue;
 
     if (typeof this.cleanupFunction === 'function') {
-      cleanupFunctionReturnValue = this.cleanupFunction.call(this);
+      cleanupFunctionReturnValue = this.cleanupFunction.call(this, name);
       if (cleanupFunctionReturnValue !== false) {
         this.cleanupFunction = null;
       }
