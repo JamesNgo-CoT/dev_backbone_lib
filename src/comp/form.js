@@ -12,10 +12,13 @@ class FormView extends BaseView {
   }
 
   preinitialize(options = {}) {
+
+    // New property-factory override
     this.formDefinition = options.formDefinition || this.formDefinition;
     this.rootPath = options.rootPath || this.rootPath;
     this.success = options.success || this.success;
 
+    // New properties
     this.cotForm = null;
     this.form = null;
     this.formValidator = null;

@@ -4,10 +4,10 @@
 class BaseRouter extends Backbone.Router {
   preinitialize(options = {}) {
 
-    // Extended property-factory override
+    // New property-factory override
     this.defaultFragment = options.defaultFragment || this.defaultFragment;
 
-    // Extended variables
+    // New property
     this.lastFragment = null;
     this.cleanupFunction = null;
 

@@ -44,7 +44,7 @@ function (_Backbone$Collection) {
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       // Backbone property-factory originally not passed by constructor
       this.model = options.model || this.model;
-      this.url = options.url || this.url; // Extended property-factory override
+      this.url = options.url || this.url; // New property-factory override
 
       this.authModel = options.authModel || this.authModel;
       this.webStorage = options.webStorage || this.webStorage;

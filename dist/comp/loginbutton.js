@@ -46,6 +46,7 @@ function (_BaseView) {
     key: "preinitialize",
     value: function preinitialize() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      // New property-factory override
       this.loginFragment = options.loginFragment || this.loginFragment;
 
       _get(_getPrototypeOf(LoginButtonView.prototype), "preinitialize", this).call(this, options);

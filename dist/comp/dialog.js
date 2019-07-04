@@ -71,9 +71,8 @@ function (_BaseView) {
     key: "preinitialize",
     value: function preinitialize() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      this.className = options.className || this.className;
-      this.attributes = options.attributes || this.attributes;
-      this.lastFocused = null;
+      // this.lastFocused = null;
+      // New properties
       this.dialog = null;
       this.headerTitleSpan = null;
       this.body = null;

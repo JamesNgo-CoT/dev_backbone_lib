@@ -5,6 +5,8 @@
 /* exported LoginButtonView */
 class LoginButtonView extends BaseView {
   preinitialize(options = {}) {
+
+    // New property-factory override
     this.loginFragment = options.loginFragment || this.loginFragment;
 
     super.preinitialize(options);

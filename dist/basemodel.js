@@ -41,7 +41,7 @@ function (_Backbone$Model) {
     value: function preinitialize(attributes) {
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       // Backbone property-factory originally not passed by constructor
-      this.urlRoot = options.urlRoot || this.urlRoot; // Extended property-factory override
+      this.urlRoot = options.urlRoot || this.urlRoot; // New property-factory override
 
       this.authModel = options.authModel || this.authModel;
       this.webStorage = options.webStorage || this.webStorage;

@@ -9,7 +9,7 @@ class AuthModel extends BaseModel {
     // Backbone property default value
     this.idAttribute = options.idAttribute || 'sid';
 
-    // Custom property-factory override
+    // New property-factory override
     this.app = options.app || this.app;
   }
 

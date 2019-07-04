@@ -44,11 +44,9 @@ class DialogView extends BaseView {
   }
 
   preinitialize(options = {}) {
-    this.className = options.className || this.className;
-    this.attributes = options.attributes || this.attributes;
+    // this.lastFocused = null;
 
-    this.lastFocused = null;
-
+    // New properties
     this.dialog = null;
     this.headerTitleSpan = null;
     this.body = null;

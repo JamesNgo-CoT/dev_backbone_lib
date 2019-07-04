@@ -5,6 +5,8 @@
 /* exported DatatableView */
 class DatatableView extends BaseView {
   preinitialize(options = {}) {
+
+    // New property-factory override
     this.datatableDefinition = options.datatableDefinition || this.datatableDefinition;
     this.dom = options.dom || this.dom;
     this.webstorage = options.webstorage || this.webstorage;
@@ -14,6 +16,7 @@ class DatatableView extends BaseView {
     this.stateLoadCallback = options.stateLoadCallback || this.stateLoadCallback;
     this.table = options.table || this.table;
 
+    // New property
     this.datatable = null;
 
     super.preinitialize(options);

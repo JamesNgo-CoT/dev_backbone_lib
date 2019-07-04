@@ -50,8 +50,8 @@ function (_Backbone$Router) {
     key: "preinitialize",
     value: function preinitialize() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      // Extended property-factory override
-      this.defaultFragment = options.defaultFragment || this.defaultFragment; // Extended variables
+      // New property-factory override
+      this.defaultFragment = options.defaultFragment || this.defaultFragment; // New property
 
       this.lastFragment = null;
       this.cleanupFunction = null;

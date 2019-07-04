@@ -44,6 +44,7 @@ function (_BaseView) {
     key: "preinitialize",
     value: function preinitialize() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      // New property-factory override
       this.datatableDefinition = options.datatableDefinition || this.datatableDefinition;
       this.dom = options.dom || this.dom;
       this.webstorage = options.webstorage || this.webstorage;
@@ -51,7 +52,8 @@ function (_BaseView) {
       this.stateSave = options.stateSave || this.stateSave;
       this.stateSaveCallback = options.stateSaveCallback || this.stateSaveCallback;
       this.stateLoadCallback = options.stateLoadCallback || this.stateLoadCallback;
-      this.table = options.table || this.table;
+      this.table = options.table || this.table; // New property
+
       this.datatable = null;
 
       _get(_getPrototypeOf(DatatableView.prototype), "preinitialize", this).call(this, options);

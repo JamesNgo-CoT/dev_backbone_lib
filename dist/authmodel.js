@@ -46,7 +46,7 @@ function (_BaseModel) {
       _get(_getPrototypeOf(AuthModel.prototype), "preinitialize", this).call(this, attributes, options); // Backbone property default value
 
 
-      this.idAttribute = options.idAttribute || 'sid'; // Custom property-factory override
+      this.idAttribute = options.idAttribute || 'sid'; // New property-factory override
 
       this.app = options.app || this.app;
     }
