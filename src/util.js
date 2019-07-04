@@ -119,6 +119,21 @@ function swapView(element, newView, oldView) {
   return newView;
 }
 
+/* exported transitionViews */
+function transitionViews(element, callback) {
+  element.style.height = getComputedStyle(element).height;
+  element.style.overflow = 'hidden';
+
+  return Promise.resolve()
+    .then(() => {
+      return callback();
+    })
+    .then(() => {
+      element.style.removeProperty('overflow');
+      element.style.removeProperty('height');
+    });
+}
+
 /* exported ajax */
 function ajax(options) {
   return new Promise((resolve, reject) => {

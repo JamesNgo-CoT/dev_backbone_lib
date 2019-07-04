@@ -136,6 +136,19 @@ function swapView(element, newView, oldView) {
   });
   return newView;
 }
+/* exported transitionViews */
+
+
+function transitionViews(element, callback) {
+  element.style.height = getComputedStyle(element).height;
+  element.style.overflow = 'hidden';
+  return Promise.resolve().then(function () {
+    return callback();
+  }).then(function () {
+    element.style.removeProperty('overflow');
+    element.style.removeProperty('height');
+  });
+}
 /* exported ajax */
 
 
