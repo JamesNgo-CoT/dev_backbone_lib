@@ -110,10 +110,11 @@ function swapView(element, newView, oldView) {
   }
 
   element.appendChild(newView.el);
-  newView.render();
-
-  element.style.removeProperty('overflow');
-  element.style.removeProperty('height');
+  newView.render()
+    .then(() => {
+      element.style.removeProperty('overflow');
+      element.style.removeProperty('height');
+    });
 
   return newView;
 }
@@ -131,7 +132,7 @@ function ajax(options) {
 }
 
 /* exported adjustArgs */
-function adjustArgs(signature,...args) {
+function adjustArgs(signature, ...args) {
   const returnValue = [];
 
   let argIndex = 0;

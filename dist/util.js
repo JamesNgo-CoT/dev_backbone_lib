@@ -130,9 +130,10 @@ function swapView(element, newView, oldView) {
   }
 
   element.appendChild(newView.el);
-  newView.render();
-  element.style.removeProperty('overflow');
-  element.style.removeProperty('height');
+  newView.render().then(function () {
+    element.style.removeProperty('overflow');
+    element.style.removeProperty('height');
+  });
   return newView;
 }
 /* exported ajax */
