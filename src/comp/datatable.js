@@ -94,7 +94,7 @@ class DatatableView extends BaseView {
     const webStorage = _.result(this, 'webStorage') || _.result(this.collection, 'webStorage');
     const webstorageKey = _.result(this, 'webstorageKey') || _.result(this.collection, 'webstorageKey');
 
-    webStorage.setItem(webstorageKey, JSON.stringify(data))
+    webStorage.setItem(webstorageKey, JSON.stringify(data));
   }
 
   stateLoadCallback(settings) {
