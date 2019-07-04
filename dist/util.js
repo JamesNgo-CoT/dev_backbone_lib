@@ -121,7 +121,7 @@ function escapeODataValue(str) {
 /* exported swapView */
 
 
-function swapView(element, newView, oldView) {
+function swapView(element, oldView, newView) {
   element.style.height = getComputedStyle(element).height;
   element.style.overflow = 'hidden';
 
@@ -129,25 +129,16 @@ function swapView(element, newView, oldView) {
     oldView.remove();
   }
 
-  element.appendChild(newView.el);
-  newView.render().then(function () {
-    element.style.removeProperty('overflow');
-    element.style.removeProperty('height');
-  });
-  return newView;
-}
-/* exported transitionViews */
-
-
-function transitionViews(element, callback) {
-  element.style.height = getComputedStyle(element).height;
-  element.style.overflow = 'hidden';
-  return Promise.resolve().then(function () {
-    return callback();
+  Promise.resolve().then(function () {
+    if (newView) {
+      element.appendChild(newView.el);
+      return newView.render();
+    }
   }).then(function () {
     element.style.removeProperty('overflow');
     element.style.removeProperty('height');
   });
+  return newView;
 }
 /* exported ajax */
 
