@@ -68,15 +68,6 @@ function (_BaseView) {
   }
 
   _createClass(NavItemView, [{
-    key: "preinitialize",
-    value: function preinitialize() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      this.tagName = options.tagName || this.tagName;
-      this.attributes = options.attributes || this.attributes;
-
-      _get(_getPrototypeOf(NavItemView.prototype), "preinitialize", this).call(this, options);
-    }
-  }, {
     key: "initialize",
     value: function initialize(options) {
       var _this = this;
@@ -217,8 +208,9 @@ function (_BaseView2) {
     key: "preinitialize",
     value: function preinitialize() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      this.attributes = options.attributes || this.attributes;
-      this.navItemView = options.navItemView || this.navItemView;
+      // New property-factory override
+      this.navItemView = options.navItemView || this.navItemView; // New property
+
       this.navItems = [];
 
       _get(_getPrototypeOf(NavView.prototype), "preinitialize", this).call(this, options);

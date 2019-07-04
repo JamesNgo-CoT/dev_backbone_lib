@@ -16,13 +16,6 @@ class NavItemModel extends BaseModel {
 
 /* exported NavItemView */
 class NavItemView extends BaseView {
-  preinitialize(options = {}) {
-    this.tagName = options.tagName || this.tagName;
-    this.attributes = options.attributes || this.attributes;
-
-    super.preinitialize(options);
-  }
-
   initialize(options) {
     this.listenTo(options.model, 'change', () => {
       this.render();
@@ -101,10 +94,11 @@ class NavCollection extends BaseCollection {
 /* exported NavView */
 class NavView extends BaseView {
   preinitialize(options = {}) {
-    this.attributes = options.attributes || this.attributes;
 
+    // New property-factory override
     this.navItemView = options.navItemView || this.navItemView;
 
+    // New property
     this.navItems = [];
 
     super.preinitialize(options);
