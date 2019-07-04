@@ -3,9 +3,9 @@
 /* exported BaseView */
 class BaseView extends Backbone.View {
   preinitialize(options = {}) {
-    this.authModel = options.authModel || this.authModel;
 
-    this.afterRenderOnce = null;
+    // Extended property-factory override
+    this.authModel = options.authModel || this.authModel;
 
     super.preinitialize(options);
   }
@@ -23,10 +23,6 @@ class BaseView extends Backbone.View {
       linkButton = this.el.querySelector('a.btn:not([role="button"])');
     }
 
-    if (this.afterRenderOnce) {
-      const afterRenderOnce = this.afterRenderOnce;
-      this.afterRenderOnce = null;
-      return afterRenderOnce();
-    }
+    return Promise.resolve();
   }
 }

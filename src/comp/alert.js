@@ -11,12 +11,6 @@ class AlertModel extends BaseModel {
 
 /* exported AlertView */
 class AlertView extends BaseView {
-  preinitialize(options = {}) {
-    this.attributes = options.attributes || this.attributes;
-
-    super.preinitialize(options);
-  }
-
   initialize(options) {
     this.listenTo(options.model, 'change', () => {
       this.render();

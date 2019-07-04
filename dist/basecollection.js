@@ -42,8 +42,10 @@ function (_Backbone$Collection) {
     key: "preinitialize",
     value: function preinitialize(models) {
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      // Backbone property-factory originally not passed by constructor
       this.model = options.model || this.model;
-      this.url = options.url || this.url;
+      this.url = options.url || this.url; // Extended property-factory override
+
       this.authModel = options.authModel || this.authModel;
       this.webStorage = options.webStorage || this.webStorage;
       this.webStorageKey = options.webStorageKey || this.webStorageKey;
@@ -77,12 +79,31 @@ function (_Backbone$Collection) {
   }, {
     key: "webStorage",
     value: function webStorage() {
-      return _.result(Backbone, 'webStorage');
+      return localStorage;
     }
   }, {
     key: "webStorageSync",
-    value: function webStorageSync(method, model, options) {
-      Backbone.webStorageSync(method, model, options);
+    value: function webStorageSync(method, model) {
+      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+      var webStorage = _.result(options, 'webStorage') || _.result(model, 'webStorage');
+
+      var webStorageKey = _.result(options, 'webStorageKey') || _.result(model, 'webStorageKey');
+
+      switch (method) {
+        case 'read':
+          model.set(model.webStorageParse(JSON.parse(webStorage.getItem(webStorageKey))), options);
+          break;
+
+        case 'create':
+        case 'update':
+          webStorage.setItem(webStorageKey, JSON.stringify(options.attrs || model.toJSON(options)));
+          break;
+
+        case 'delete':
+          webStorage.removeItem(webStorageKey);
+          break;
+      }
     }
   }, {
     key: "webStorageParse",

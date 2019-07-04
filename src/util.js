@@ -1,7 +1,5 @@
 /* global $ */
 
-////////////////////////////////////////////////////////////////////////////////
-
 /* exported toQueryString */
 function toQueryString(queryObject) {
   if (Array.isArray(queryObject)) {
@@ -87,8 +85,6 @@ function toQueryObject(queryString) {
   }
 }
 
-////////////////////////////////////////////////////////////////////////////////
-
 /* exported escapeODataValue */
 function escapeODataValue(str) {
   return str
@@ -103,8 +99,6 @@ function escapeODataValue(str) {
     .replace(/\]/g, "%5D")
     .replace(/\s/g, "%20");
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 /* exported swapView */
 function swapView(element, newView, oldView) {
@@ -136,16 +130,11 @@ function ajax(options) {
   });
 }
 
-////////////////////////////////////////////////////////////////////////////////
-
 /* exported adjustArgs */
-const adjustArgs = (...args) => {
+function adjustArgs(signature,...args) {
   const returnValue = [];
 
-  const signature = args.pop();
-
   let argIndex = 0;
-
   for (let index = 0, length = signature.length; index < length; index++) {
     if (args[argIndex] == null) {
       argIndex = argIndex + 1;
@@ -159,4 +148,4 @@ const adjustArgs = (...args) => {
   }
 
   return returnValue;
-};
+}

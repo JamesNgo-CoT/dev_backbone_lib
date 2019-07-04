@@ -42,11 +42,13 @@ function (_BaseModel) {
     key: "preinitialize",
     value: function preinitialize(attributes) {
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      _get(_getPrototypeOf(AuthModel.prototype), "preinitialize", this).call(this, attributes, options); // Backbone property default value
+
+
+      this.idAttribute = options.idAttribute || 'sid'; // Custom property-factory override
+
       this.app = options.app || this.app;
-
-      _get(_getPrototypeOf(AuthModel.prototype), "preinitialize", this).call(this, attributes, options);
-
-      this.idAttribute = options.idAttribute || 'sid';
     }
   }, {
     key: "initialize",

@@ -44,28 +44,3 @@ Backbone.sync = function (backboneSync) {
     return backboneSync.call(_this, method, model, options);
   };
 }(Backbone.sync);
-
-Backbone.webStorage = localStorage;
-
-Backbone.webStorageSync = function (method, model) {
-  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-  var webStorage = _.result(options, 'webStorage') || _.result(model, 'webStorage');
-
-  var webStorageKey = _.result(options, 'webStorageKey') || _.result(model, 'webStorageKey');
-
-  switch (method) {
-    case 'read':
-      model.set(model.webStorageParse(JSON.parse(webStorage.getItem(webStorageKey))), options);
-      break;
-
-    case 'create':
-    case 'update':
-      webStorage.setItem(webStorageKey, JSON.stringify(options.attrs || model.toJSON(options)));
-      break;
-
-    case 'delete':
-      webStorage.removeItem(webStorageKey);
-      break;
-  }
-};

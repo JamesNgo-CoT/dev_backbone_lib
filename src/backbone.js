@@ -38,25 +38,3 @@ Backbone.sync = (backboneSync => ((method, model, options = {}) => {
 
   return backboneSync.call(this, method, model, options);
 }))(Backbone.sync);
-
-Backbone.webStorage = localStorage;
-
-Backbone.webStorageSync = (method, model, options = {}) => {
-  const webStorage = _.result(options, 'webStorage') || _.result(model, 'webStorage');
-  const webStorageKey = _.result(options, 'webStorageKey') || _.result(model, 'webStorageKey');
-
-  switch (method) {
-    case 'read':
-      model.set(model.webStorageParse(JSON.parse(webStorage.getItem(webStorageKey))), options);
-      break;
-
-    case 'create':
-    case 'update':
-      webStorage.setItem(webStorageKey, JSON.stringify(options.attrs || model.toJSON(options)));
-      break;
-
-    case 'delete':
-      webStorage.removeItem(webStorageKey);
-      break;
-  }
-}

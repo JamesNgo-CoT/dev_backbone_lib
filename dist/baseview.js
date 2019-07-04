@@ -40,8 +40,8 @@ function (_Backbone$View) {
     key: "preinitialize",
     value: function preinitialize() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      // Extended property-factory override
       this.authModel = options.authModel || this.authModel;
-      this.afterRenderOnce = null;
 
       _get(_getPrototypeOf(BaseView.prototype), "preinitialize", this).call(this, options);
     }
@@ -61,11 +61,7 @@ function (_Backbone$View) {
         linkButton = this.el.querySelector('a.btn:not([role="button"])');
       }
 
-      if (this.afterRenderOnce) {
-        var afterRenderOnce = this.afterRenderOnce;
-        this.afterRenderOnce = null;
-        return afterRenderOnce();
-      }
+      return Promise.resolve();
     }
   }]);
 

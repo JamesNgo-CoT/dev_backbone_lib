@@ -4,11 +4,13 @@
 /* exported AuthModel */
 class AuthModel extends BaseModel {
   preinitialize(attributes, options = {}) {
-    this.app = options.app || this.app;
-
     super.preinitialize(attributes, options);
 
+    // Backbone property default value
     this.idAttribute = options.idAttribute || 'sid';
+
+    // Custom property-factory override
+    this.app = options.app || this.app;
   }
 
   initialize(attributes, options) {

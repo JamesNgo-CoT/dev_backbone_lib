@@ -3,7 +3,6 @@
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 /* global $ */
-////////////////////////////////////////////////////////////////////////////////
 
 /* exported toQueryString */
 function toQueryString(queryObject) {
@@ -112,15 +111,13 @@ function toQueryObject(queryString) {
     default:
       return value;
   }
-} ////////////////////////////////////////////////////////////////////////////////
-
+}
 /* exported escapeODataValue */
 
 
 function escapeODataValue(str) {
   return str.replace(/'/g, "''").replace(/%/g, "%25").replace(/\+/g, "%2B").replace(/\//g, "%2F").replace(/\?/g, "%3F").replace(/#/g, "%23").replace(/&/g, "%26").replace(/\[/g, "%5B").replace(/\]/g, "%5D").replace(/\s/g, "%20");
-} ////////////////////////////////////////////////////////////////////////////////
-
+}
 /* exported swapView */
 
 
@@ -149,32 +146,25 @@ function ajax(options) {
       reject(errorThrown);
     });
   });
-} ////////////////////////////////////////////////////////////////////////////////
-
+}
 /* exported adjustArgs */
 
 
-var adjustArgs = function adjustArgs() {
+function adjustArgs(signature) {
   var returnValue = [];
-
-  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-    args[_key] = arguments[_key];
-  }
-
-  var signature = args.pop();
   var argIndex = 0;
 
   for (var index = 0, length = signature.length; index < length; index++) {
-    if (args[argIndex] == null) {
+    if ((argIndex + 1 < 1 || arguments.length <= argIndex + 1 ? undefined : arguments[argIndex + 1]) == null) {
       argIndex = argIndex + 1;
-    } else if (signature[index] === 'array' && Array.isArray(args[argIndex])) {
-      returnValue[index] = args[argIndex];
+    } else if (signature[index] === 'array' && Array.isArray(argIndex + 1 < 1 || arguments.length <= argIndex + 1 ? undefined : arguments[argIndex + 1])) {
+      returnValue[index] = argIndex + 1 < 1 || arguments.length <= argIndex + 1 ? undefined : arguments[argIndex + 1];
       argIndex = argIndex + 1;
-    } else if (_typeof(args[argIndex]) === signature[index]) {
-      returnValue[index] = args[argIndex];
+    } else if (_typeof(argIndex + 1 < 1 || arguments.length <= argIndex + 1 ? undefined : arguments[argIndex + 1]) === signature[index]) {
+      returnValue[index] = argIndex + 1 < 1 || arguments.length <= argIndex + 1 ? undefined : arguments[argIndex + 1];
       argIndex = argIndex + 1;
     }
   }
 
   return returnValue;
-};
+}
