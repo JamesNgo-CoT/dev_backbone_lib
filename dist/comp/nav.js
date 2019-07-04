@@ -107,7 +107,7 @@ function (_BaseView) {
         this.el.classList.add('hide');
       }
 
-      _get(_getPrototypeOf(NavItemView.prototype), "render", this).call(this);
+      return _get(_getPrototypeOf(NavItemView.prototype), "render", this).call(this);
     }
   }]);
 
@@ -261,6 +261,7 @@ function (_BaseView2) {
 
       var wrapper = this.el.appendChild(document.createElement('ul'));
       wrapper.classList.add('nav', 'nav-tabs');
+      var navItemViewRenderPromises = [];
 
       var authModel = _.result(this, 'authModel');
 
@@ -282,13 +283,14 @@ function (_BaseView2) {
 
         if (navItemView) {
           wrapper.appendChild(navItemView.el);
-          navItemView.render();
+          navItemViewRenderPromises.push(navItemView.render());
 
           _this4.navItems.push(navItemView);
         }
       });
-
-      _get(_getPrototypeOf(NavView.prototype), "render", this).call(this);
+      return Promise.all(navItemViewRenderPromises).then(function () {
+        return _get(_getPrototypeOf(NavView.prototype), "render", _this4).call(_this4);
+      });
     }
   }]);
 

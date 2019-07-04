@@ -184,7 +184,7 @@ function (_BaseView) {
         this.footer.appendChild(footerContent);
       }
 
-      _get(_getPrototypeOf(DialogView.prototype), "render", this).call(this);
+      return _get(_getPrototypeOf(DialogView.prototype), "render", this).call(this);
     }
   }, {
     key: "open",

@@ -60,21 +60,22 @@ function (_DialogView) {
       var _this = this;
 
       this.removeLoginFormView();
+      return _get(_getPrototypeOf(LoginDialogView.prototype), "render", this).call(this).then(function () {
+        _this.dialog.classList.add('modal-md');
 
-      _get(_getPrototypeOf(LoginDialogView.prototype), "render", this).call(this);
+        _this.headerTitleSpan.textContent = 'Login Dialog';
+        _this.loginFormView = new LoginFormView({
+          model: _this.model
+        });
 
-      this.dialog.classList.add('modal-md');
-      this.headerTitleSpan.textContent = 'Login Dialog';
-      this.loginFormView = new LoginFormView({
-        model: this.model
+        _this.loginFormView.on('success', function () {
+          _this.close();
+        });
+
+        _this.body.appendChild(_this.loginFormView.el);
+
+        return _this.loginFormView.render();
       });
-      console.log(this.loginFormView.el);
-      this.loginFormView.on('success', function () {
-        _this.close();
-      });
-      this.body.appendChild(this.loginFormView.el);
-      var formViewRenderPromise = this.loginFormView.render();
-      return formViewRenderPromise;
     }
   }], [{
     key: "singleton",

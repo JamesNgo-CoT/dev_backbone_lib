@@ -59,7 +59,7 @@ class DatatableView extends BaseView {
 
     this.datatable = $(table).DataTable(datatableDefinition);
 
-    super.render();
+    return super.render();
   }
 
   webStorage() {

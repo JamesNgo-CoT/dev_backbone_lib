@@ -54,7 +54,7 @@ class FormView extends BaseView {
         this.form = this.el.querySelector('form');
         this.formValidator = $(this.form).data('formValidation');
 
-        super.render(this);
+        return super.render(this);
       });
   }
 

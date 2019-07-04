@@ -158,7 +158,7 @@ class DialogView extends BaseView {
       this.footer.appendChild(footerContent);
     }
 
-    super.render();
+    return super.render();
   }
 
   open() {

@@ -110,8 +110,7 @@ function (_BaseView) {
       };
 
       this.datatable = $(table).DataTable(datatableDefinition);
-
-      _get(_getPrototypeOf(DatatableView.prototype), "render", this).call(this);
+      return _get(_getPrototypeOf(DatatableView.prototype), "render", this).call(this);
     }
   }, {
     key: "webStorage",

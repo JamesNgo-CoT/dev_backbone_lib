@@ -41,7 +41,7 @@ class LoginButtonView extends BaseView {
       this.el.innerHTML = `<a href="#${fullLoginFragment}" class="btn btn-default">Login</a>`;
     }
 
-    super.render();
+    return super.render();
   }
 
   fullLoginFragment() {

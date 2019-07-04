@@ -109,7 +109,7 @@ function (_BaseView) {
         innerMessageElement.appendChild(message);
       }
 
-      _get(_getPrototypeOf(AlertView.prototype), "render", this).call(this);
+      return _get(_getPrototypeOf(AlertView.prototype), "render", this).call(this);
     }
   }, {
     key: "close",

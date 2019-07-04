@@ -31,20 +31,18 @@ class LoginDialogView extends DialogView {
   render() {
     this.removeLoginFormView();
 
-    super.render();
+    return super.render()
+      .then(() => {
+        this.dialog.classList.add('modal-md');
 
-    this.dialog.classList.add('modal-md');
+        this.headerTitleSpan.textContent = 'Login Dialog';
 
-    this.headerTitleSpan.textContent = 'Login Dialog';
-
-    this.loginFormView = new LoginFormView({ model: this.model });
-    console.log(this.loginFormView.el);
-    this.loginFormView.on('success', () => {
-      this.close();
-    });
-    this.body.appendChild(this.loginFormView.el);
-    const formViewRenderPromise = this.loginFormView.render();
-
-    return formViewRenderPromise;
+        this.loginFormView = new LoginFormView({ model: this.model });
+        this.loginFormView.on('success', () => {
+          this.close();
+        });
+        this.body.appendChild(this.loginFormView.el);
+        return this.loginFormView.render();
+      });
   }
 }

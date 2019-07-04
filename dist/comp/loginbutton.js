@@ -90,7 +90,7 @@ function (_BaseView) {
         this.el.innerHTML = "<a href=\"#".concat(fullLoginFragment, "\" class=\"btn btn-default\">Login</a>");
       }
 
-      _get(_getPrototypeOf(LoginButtonView.prototype), "render", this).call(this);
+      return _get(_getPrototypeOf(LoginButtonView.prototype), "render", this).call(this);
     }
   }, {
     key: "fullLoginFragment",

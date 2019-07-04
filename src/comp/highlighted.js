@@ -31,6 +31,6 @@ class HighlightedView extends BaseView {
       this.el.appendChild(content);
     }
 
-    super.render();
+    return super.render();
   }
 }

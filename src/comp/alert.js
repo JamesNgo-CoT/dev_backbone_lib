@@ -52,7 +52,7 @@ class AlertView extends BaseView {
       innerMessageElement.appendChild(message);
     }
 
-    super.render();
+    return super.render();
   }
 
   close() {

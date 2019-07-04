@@ -86,8 +86,7 @@ function (_BaseView) {
       }).then(function () {
         _this.form = _this.el.querySelector('form');
         _this.formValidator = $(_this.form).data('formValidation');
-
-        _get(_getPrototypeOf(FormView.prototype), "render", _this).call(_this, _this);
+        return _get(_getPrototypeOf(FormView.prototype), "render", _this).call(_this, _this);
       });
     }
   }, {

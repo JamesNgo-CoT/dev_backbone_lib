@@ -47,7 +47,7 @@ class NavItemView extends BaseView {
       this.el.classList.add('hide');
     }
 
-    super.render();
+    return super.render();
   }
 }
 
@@ -135,6 +135,7 @@ class NavView extends BaseView {
     const wrapper = this.el.appendChild(document.createElement('ul'));
     wrapper.classList.add('nav', 'nav-tabs');
 
+    const navItemViewRenderPromises = [];
     const authModel = _.result(this, 'authModel');
     this.collection.each(model => {
       let navItemView;
@@ -147,11 +148,14 @@ class NavView extends BaseView {
       }
       if (navItemView) {
         wrapper.appendChild(navItemView.el);
-        navItemView.render();
+        navItemViewRenderPromises.push(navItemView.render());
         this.navItems.push(navItemView);
       }
     });
 
-    super.render();
+    return Promise.all(navItemViewRenderPromises)
+      .then(() => {
+        return super.render();
+      });
   }
 }

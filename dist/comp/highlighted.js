@@ -87,7 +87,7 @@ function (_BaseView) {
         this.el.appendChild(content);
       }
 
-      _get(_getPrototypeOf(HighlightedView.prototype), "render", this).call(this);
+      return _get(_getPrototypeOf(HighlightedView.prototype), "render", this).call(this);
     }
   }]);
 
