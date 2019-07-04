@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>core_override.js</title>
+
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+
+<body>
+  <h1>core_override.js</h1>
+
+  Extends/overrides CoreJS classes.
+
+  <h2 id="cot_app">cot_app Class</h2>
+
+  <h3>New Properties</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr id="cot_app__titleElement">
+        <th>titleElement</th>
+        <td>
+          <p><strong>Type</strong>: <a
+              href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement">HTMLElement</a></p>
+          <div>
+            <p>A reference to an focusable element inside the page title element.</p>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Overridden Methods</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr id="cot_app__render">
+        <th>render</th>
+        <td>
+          <p><code>render()</code></p>
+
+          <div>
+            <p><strong>Argument(s)</strong>: None</p>
+
+            <p><strong>Return Value</strong>: None</p>
+
+            <p>Adds reference to the new <a href="#titleElement">titleElement</a> property before calling the original
+              render method.</p>
+          </div>
+        </td>
+      </tr>
+
+      <tr id="cot_app__setTitle">
+        <th>setTitle</th>
+        <td>
+          <p><code>setTitle(title[, subTitle])</code></p>
+
+          <div>
+            <p><strong>Argument(s)</strong>:</p>
+
+            <ul>
+              <li><strong>title</strong>: <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>
+              </li>
+              <li><strong>subTitle</strong> (optional): <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>
+              </li>
+            </ul>
+
+            <p><strong>Return Value</strong>: None</p>
+
+            <p>Sets the page title and updates the HTML document's title.</p>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="cot_form">cot_form Class</h2>
+
+  <h3>Overridden Methods</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr id="cot_form__addformfield">
+        <th>addformfield</th>
+        <td>
+          <p><code>addformfield(fieldDefinition, fieldContainer)</code></p>
+
+          <div>
+            <p><strong>Argument(s)</strong>:</p>
+
+            <ul>
+              <li><strong>fieldDefinition</strong>: Object</li>
+              <li><strong>fieldContainer</strong>: Any</li>
+            </ul>
+
+            <p><strong>Return Value</strong>: None</p>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+
+</html>

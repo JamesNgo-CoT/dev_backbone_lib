@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>util.js</title>
+
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+
+<body>
+  <h1>util.js</h1>
+
+  <p>Contains common utility functions.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Functions</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr id="toQueryString">
+        <th>toQueryString</th>
+        <td>
+          <p><code>toQueryString(queryObject)</code></p>
+
+          <div>
+            <p><strong>Argument(s)</strong>:</p>
+
+            <ul>
+              <li><strong>queryObject</strong>: <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
+              </li>
+            </ul>
+
+            <p><strong>Return Value</strong>: <a
+                href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>
+            </p>
+
+            <p>Takes an object value and returns a formatted string which can be transformed back into an object
+              using the <a href="#toQueryObject">toQueryObject</a> function.</p>
+
+            <p>A single character prefix is added to the values to represent initial type.</p>
+          </div>
+        </td>
+      </tr>
+
+      <tr id="toQueryObject">
+        <th>toQueryObject</th>
+        <td>
+          <p><code>toQueryObject(queryString)</code></p>
+
+          <div>
+            <p><strong>Argument(s)</strong>:</p>
+
+            <ul>
+              <li><strong>queryString</strong>: <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>
+              </li>
+            </ul>
+
+            <p><strong>Return Value</strong>: <a
+                href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
+            </p>
+
+            <p>Takes a formatted string, returned by <a href="#toQueryString">toQueryString</a> function, and returns an
+              object</p>
+          </div>
+        </td>
+      </tr>
+
+      <tr id="escapeODataValue">
+        <th>escapeODataValue</th>
+        <td>
+          <p><code>escapeODataValue(str)</code></p>
+
+          <div>
+            <p><strong>Argument(s)</strong>:</p>
+
+            <ul>
+              <li><strong>str</strong>: <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>
+              </li>
+            </ul>
+
+            <p><strong>Return Value</strong>: <a
+                href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a>
+            </p>
+
+            <p>Used in oData ($filter) query string to remove special characters not allowed by the oData service.</p>
+          </div>
+        </td>
+      </tr>
+
+      <tr id="swapView">
+        <th>swapView</th>
+        <td>
+          <p><code>swapView(element, newView[, oldView])</code></p>
+
+          <div>
+            <p><strong>Argument(s)</strong>:</p>
+
+            <ul>
+              <li><strong>element</strong>: <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement">HTMLElement</a></li>
+              <li><strong>newView</strong>: <a href="https://backbonejs.org/#View">Backbone.View</a></li>
+              <li><strong>oldView</strong>: <a href="https://backbonejs.org/#View">Backbone.View</a></li>
+            </ul>
+
+            <p><strong>Return Value</strong>: <a href="https://backbonejs.org/#View">Backbone.View</a></p>
+
+            <p>Transitions from one (oldView) Backbone View to another (newView) Backbone View located inside
+              (element) an HTMLElement, returning the new (newView) Backbone View.</p>
+
+            <p>In addition to swapping between two Backbone Views, it freezes the element's height to prevent
+              flickering between two sizes.</p>
+          </div>
+        </td>
+      </tr>
+
+      <tr id="ajax">
+        <th>ajax</th>
+        <td>
+          <p><code>ajax(options)</code></p>
+
+          <div>
+            <p><strong>Argument(s)</strong>:</p>
+
+            <ul>
+              <li><strong>options</strong>: <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>
+              </li>
+            </ul>
+
+            <p><strong>Return Value</strong>: <a
+                href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>
+            </p>
+
+            <p>A wrapper for the Jquery ajax function.</p>
+          </div>
+        </td>
+      </tr>
+
+      <tr id="adjustArgsadjustArgs">
+        <th>adjustArgsadjustArgs</th>
+        <td>
+          <p><code>adjustArgs(signature,...args)</code></p>
+
+          <div>
+            <p><strong>Argument(s)</strong>:</p>
+
+            <ul>
+              <li><strong>signature</strong>: <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>
+              </li>
+              <li><strong>...args</strong>: Any</li>
+            </ul>
+
+            <p><strong>Return Value</strong>: <a
+                href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>
+              </li>
+            </p>
+
+            <p>Takes an array of type of values (signature) and match it to a list or arguments (...args) returning an
+              array of values in the order of the signature information.</p>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+
+</html>
