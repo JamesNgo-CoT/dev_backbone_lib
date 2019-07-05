@@ -1,5 +1,7 @@
-& {
-  @import 'dialog.scss';
+@import 'dialog.scss';
+
+%LoginDialogView {
+  @extend %DialogView;
 
   .modal-footer {
     display: none;
