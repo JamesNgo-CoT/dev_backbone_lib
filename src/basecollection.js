@@ -1,5 +1,4 @@
-/* global _ Backbone */
-/* global BaseModel */
+/* global _ Backbone BaseModel */
 
 /* exported BaseCollection */
 class BaseCollection extends Backbone.Collection {

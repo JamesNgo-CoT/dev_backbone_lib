@@ -44,7 +44,6 @@ class DialogView extends BaseView {
   }
 
   preinitialize(options = {}) {
-    // this.lastFocused = null;
 
     // New properties
     this.dialog = null;
@@ -80,16 +79,10 @@ class DialogView extends BaseView {
   events() {
     return {
       ['shown.bs.modal']() {
-        // this.lastFocused = document.activeElement;
-        // console.log(this.lastFocused)
         this.el.querySelector('.modal-title span[tabindex="-1"]').focus();
       },
 
       ['hidden.bs.modal']() {
-        // console.log(this.lastFocused)
-        // if (this.lastFocused) {
-        //   this.lastFocused.focus();
-        // }
         this.trigger('hidden.bs.modal');
       }
     }

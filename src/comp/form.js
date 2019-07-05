@@ -1,5 +1,4 @@
-/* global _ $ */
-/* global CotForm BaseView AlertModel AlertView */
+/* global $ _ CotForm BaseView AlertModel AlertView */
 
 /* exported FormView */
 class FormView extends BaseView {

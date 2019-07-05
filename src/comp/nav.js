@@ -1,5 +1,4 @@
-/* global _ */
-/* global BaseModel BaseCollection BaseView */
+/* global _ BaseModel BaseCollection BaseView */
 
 /* exported NavItemModel */
 class NavItemModel extends BaseModel {

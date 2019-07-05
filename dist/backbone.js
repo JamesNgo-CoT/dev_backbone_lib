@@ -2,9 +2,7 @@
 
 var _this = void 0;
 
-/* global _ Backbone */
-
-/* global ajax */
+/* global _ Backbone ajax */
 Backbone.ajax = ajax;
 
 Backbone.sync = function (backboneSync) {

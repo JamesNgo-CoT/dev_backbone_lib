@@ -1,6 +1,4 @@
-/* global escapeODataValue */
-/* global _ $ Backbone */
-/* global BaseView */
+/* global $ _ Backbone escapeODataValue BaseView */
 
 /* exported DatatableView */
 class DatatableView extends BaseView {

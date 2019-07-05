@@ -71,7 +71,6 @@ function (_BaseView) {
     key: "preinitialize",
     value: function preinitialize() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      // this.lastFocused = null;
       // New properties
       this.dialog = null;
       this.headerTitleSpan = null;
@@ -112,14 +111,8 @@ function (_BaseView) {
       var _ref;
 
       return _ref = {}, _defineProperty(_ref, 'shown.bs.modal', function shownBsModal() {
-        // this.lastFocused = document.activeElement;
-        // console.log(this.lastFocused)
         this.el.querySelector('.modal-title span[tabindex="-1"]').focus();
       }), _defineProperty(_ref, 'hidden.bs.modal', function hiddenBsModal() {
-        // console.log(this.lastFocused)
-        // if (this.lastFocused) {
-        //   this.lastFocused.focus();
-        // }
         this.trigger('hidden.bs.modal');
       }), _ref;
     }

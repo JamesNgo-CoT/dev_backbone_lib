@@ -1,6 +1,4 @@
-/* global toQueryString */
-/* global _ Backbone */
-/* global BaseView */
+/* global _ Backbone toQueryString BaseView */
 
 /* exported LoginButtonView */
 class LoginButtonView extends BaseView {

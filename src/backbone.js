@@ -1,6 +1,4 @@
-/* global _ Backbone */
-
-/* global ajax */
+/* global _ Backbone ajax */
 
 Backbone.ajax = ajax;
 

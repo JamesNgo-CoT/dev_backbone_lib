@@ -1,5 +1,4 @@
-/* global _ */
-/* global BaseModel */
+/* global _ BaseModel */
 
 /* exported AuthModel */
 class AuthModel extends BaseModel {
