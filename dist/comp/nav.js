@@ -22,7 +22,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-/* global _ BaseModel BaseCollection BaseView */
+/* global _ Backbone BaseModel BaseCollection BaseView */
 
 /* exported NavItemModel */
 var NavItemModel =
@@ -130,7 +130,7 @@ function (_NavItemView) {
     value: function initialize(options) {
       var _this2 = this;
 
-      var authModel = _.result(this, 'authModel');
+      var authModel = _.result(Backbone, 'authModel');
 
       this.listenTo(authModel, 'change', function () {
         _this2.render();
@@ -142,9 +142,9 @@ function (_NavItemView) {
     value: function render() {
       _get(_getPrototypeOf(AuthyNavItemView.prototype), "render", this).call(this);
 
-      var authModel = _.result(this, 'authModel');
+      var authModel = _.result(Backbone, 'authModel');
 
-      if (authModel.isLoggedIn()) {
+      if (authModel && authModel.isLoggedIn()) {
         this.el.classList.remove('hide');
       } else {
         this.el.classList.add('hide');
@@ -260,19 +260,13 @@ function (_BaseView2) {
       var wrapper = this.el.appendChild(document.createElement('ul'));
       wrapper.classList.add('nav', 'nav-tabs');
       var navItemViewRenderPromises = [];
-
-      var authModel = _.result(this, 'authModel');
-
       this.collection.each(function (model) {
         var navItemView;
 
         if (model.get('requiresLogin')) {
-          if (authModel) {
-            navItemView = new AuthyNavItemView({
-              model: model,
-              authModel: authModel
-            });
-          }
+          navItemView = new AuthyNavItemView({
+            model: model
+          });
         } else {
           navItemView = new NavItemView({
             model: model

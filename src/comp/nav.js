@@ -1,4 +1,4 @@
-/* global _ BaseModel BaseCollection BaseView */
+/* global _ Backbone BaseModel BaseCollection BaseView */
 
 /* exported NavItemModel */
 class NavItemModel extends BaseModel {
@@ -53,7 +53,7 @@ class NavItemView extends BaseView {
 /* exported AuthyNavItemView */
 class AuthyNavItemView extends NavItemView {
   initialize(options) {
-    const authModel = _.result(this, 'authModel');
+    const authModel = _.result(Backbone, 'authModel');
     this.listenTo(authModel, 'change', () => {
       this.render();
     });
@@ -64,8 +64,8 @@ class AuthyNavItemView extends NavItemView {
   render() {
     super.render();
 
-    const authModel = _.result(this, 'authModel');
-    if (authModel.isLoggedIn()) {
+    const authModel = _.result(Backbone, 'authModel');
+    if (authModel && authModel.isLoggedIn()) {
       this.el.classList.remove('hide');
     } else {
       this.el.classList.add('hide');
@@ -135,13 +135,10 @@ class NavView extends BaseView {
     wrapper.classList.add('nav', 'nav-tabs');
 
     const navItemViewRenderPromises = [];
-    const authModel = _.result(this, 'authModel');
     this.collection.each(model => {
       let navItemView;
       if (model.get('requiresLogin')) {
-        if (authModel) {
-          navItemView = new AuthyNavItemView({ model, authModel });
-        }
+        navItemView = new AuthyNavItemView({ model });
       } else {
         navItemView = new NavItemView({ model });
       }
