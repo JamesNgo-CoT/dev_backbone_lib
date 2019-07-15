@@ -11,6 +11,7 @@ class BaseCollection extends Backbone.Collection {
     // New property-factory override
     this.webStorage = options.webStorage || this.webStorage;
     this.webStorageKey = options.webStorageKey || this.webStorageKey;
+    this.addAuthorization = options.addAuthorization || this.addAuthorization;
 
     super.preinitialize(models, options);
   }
