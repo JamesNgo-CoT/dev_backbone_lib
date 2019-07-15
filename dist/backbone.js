@@ -4,6 +4,7 @@ var _this = void 0;
 
 /* global _ Backbone ajax */
 Backbone.ajax = ajax;
+Backbone.authModel = null;
 
 Backbone.sync = function (backboneSync) {
   return function (method, model) {
@@ -12,9 +13,9 @@ Backbone.sync = function (backboneSync) {
     options.headers.Accept = options.headers.Accept || 'application/json; charset=utf-8';
 
     if (!options.headers.Authorization) {
-      var authModel = _.result(options, 'authModel') || _.result(model, 'authModel');
+      var authModel = _.result(Backbone, 'authModel');
 
-      if (authModel && !authModel.isNew()) {
+      if (authModel && !authModel.isNew() && model.addAuthorization !== false) {
         options.headers.Authorization = "AuthSession ".concat(authModel.get(authModel.idAttribute));
       }
     }

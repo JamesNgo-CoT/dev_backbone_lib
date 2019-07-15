@@ -8,7 +8,6 @@ class BaseModel extends Backbone.Model {
     this.urlRoot = options.urlRoot || this.urlRoot;
 
     // New property-factory override
-    this.authModel = options.authModel || this.authModel;
     this.webStorage = options.webStorage || this.webStorage;
     this.webStorageKey = options.webStorageKey || this.webStorageKey;
 
@@ -23,10 +22,6 @@ class BaseModel extends Backbone.Model {
     const base = _.result(this, 'urlRoot') || _.result(this.collection, 'url');
     const id = this.get(this.idAttribute);
     return `${base.replace(/\/$/, '')}('${encodeURIComponent(id)}')`;
-  }
-
-  authModel() {
-    return null;
   }
 
   webStorage() {

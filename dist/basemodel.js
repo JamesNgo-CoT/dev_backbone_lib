@@ -43,7 +43,6 @@ function (_Backbone$Model) {
       // Backbone property-factory originally not passed by constructor
       this.urlRoot = options.urlRoot || this.urlRoot; // New property-factory override
 
-      this.authModel = options.authModel || this.authModel;
       this.webStorage = options.webStorage || this.webStorage;
       this.webStorageKey = options.webStorageKey || this.webStorageKey;
 
@@ -60,11 +59,6 @@ function (_Backbone$Model) {
 
       var id = this.get(this.idAttribute);
       return "".concat(base.replace(/\/$/, ''), "('").concat(encodeURIComponent(id), "')");
-    }
-  }, {
-    key: "authModel",
-    value: function authModel() {
-      return null;
     }
   }, {
     key: "webStorage",

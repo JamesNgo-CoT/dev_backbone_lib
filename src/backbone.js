@@ -2,13 +2,15 @@
 
 Backbone.ajax = ajax;
 
+Backbone.authModel = null;
+
 Backbone.sync = (backboneSync => ((method, model, options = {}) => {
   options.headers = options.headers || {};
   options.headers.Accept = options.headers.Accept || 'application/json; charset=utf-8';
 
   if (!options.headers.Authorization) {
-    const authModel = _.result(options, 'authModel') || _.result(model, 'authModel');
-    if (authModel && !authModel.isNew()) {
+    const authModel = _.result(Backbone, 'authModel');
+    if (authModel && !authModel.isNew() && model.addAuthorization !== false) {
       options.headers.Authorization = `AuthSession ${authModel.get(authModel.idAttribute)}`;
     }
   }
