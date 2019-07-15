@@ -40,8 +40,6 @@ function (_Backbone$View) {
     key: "preinitialize",
     value: function preinitialize() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      // New property-factory override
-      this.authModel = options.authModel || this.authModel;
 
       _get(_getPrototypeOf(BaseView.prototype), "preinitialize", this).call(this, options);
     }

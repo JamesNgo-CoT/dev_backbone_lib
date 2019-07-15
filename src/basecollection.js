@@ -9,7 +9,6 @@ class BaseCollection extends Backbone.Collection {
     this.url = options.url || this.url;
 
     // New property-factory override
-    this.authModel = options.authModel || this.authModel;
     this.webStorage = options.webStorage || this.webStorage;
     this.webStorageKey = options.webStorageKey || this.webStorageKey;
 

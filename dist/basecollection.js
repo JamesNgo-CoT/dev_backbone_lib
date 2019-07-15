@@ -44,7 +44,6 @@ function (_Backbone$Collection) {
       this.model = options.model || this.model;
       this.url = options.url || this.url; // New property-factory override
 
-      this.authModel = options.authModel || this.authModel;
       this.webStorage = options.webStorage || this.webStorage;
       this.webStorageKey = options.webStorageKey || this.webStorageKey;
 

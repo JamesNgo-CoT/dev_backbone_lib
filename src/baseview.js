@@ -4,9 +4,6 @@
 class BaseView extends Backbone.View {
   preinitialize(options = {}) {
 
-    // New property-factory override
-    this.authModel = options.authModel || this.authModel;
-
     super.preinitialize(options);
   }
 
