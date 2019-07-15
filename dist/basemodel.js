@@ -117,6 +117,11 @@ function (_Backbone$Model) {
     value: function webStorageDestroy(options) {
       this.webStorageSync('delete', this, options);
     }
+  }, {
+    key: "addAuthorization",
+    value: function addAuthorization() {
+      return false;
+    }
   }]);
 
   return BaseModel;

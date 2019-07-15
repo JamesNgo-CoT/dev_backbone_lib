@@ -10,7 +10,8 @@ Backbone.sync = (backboneSync => ((method, model, options = {}) => {
 
   if (!options.headers.Authorization) {
     const authModel = _.result(Backbone, 'authModel');
-    if (authModel && !authModel.isNew() && model.addAuthorization !== false) {
+    const addAuthorization = _.result(model, 'addAuthorization');
+    if (authModel && !authModel.isNew() && addAuthorization !== false) {
       options.headers.Authorization = `AuthSession ${authModel.get(authModel.idAttribute)}`;
     }
   }

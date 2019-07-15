@@ -130,6 +130,11 @@ function (_Backbone$Collection) {
     value: function webStorageDestroy(options) {
       this.webStorageSync('delete', this, options);
     }
+  }, {
+    key: "addAuthorization",
+    value: function addAuthorization() {
+      return false;
+    }
   }]);
 
   return BaseCollection;

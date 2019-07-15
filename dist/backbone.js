@@ -15,7 +15,9 @@ Backbone.sync = function (backboneSync) {
     if (!options.headers.Authorization) {
       var authModel = _.result(Backbone, 'authModel');
 
-      if (authModel && !authModel.isNew() && model.addAuthorization !== false) {
+      var addAuthorization = _.result(model, 'addAuthorization');
+
+      if (authModel && !authModel.isNew() && addAuthorization !== false) {
         options.headers.Authorization = "AuthSession ".concat(authModel.get(authModel.idAttribute));
       }
     }

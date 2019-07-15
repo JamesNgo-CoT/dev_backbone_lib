@@ -71,4 +71,8 @@ class BaseModel extends Backbone.Model {
   webStorageDestroy(options) {
     this.webStorageSync('delete', this, options);
   }
+
+  addAuthorization() {
+    return false;
+  }
 }

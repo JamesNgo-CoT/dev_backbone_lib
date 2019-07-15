@@ -83,4 +83,8 @@ class BaseCollection extends Backbone.Collection {
   webStorageDestroy(options) {
     this.webStorageSync('delete', this, options);
   }
+
+  addAuthorization() {
+    return false;
+  }
 }
