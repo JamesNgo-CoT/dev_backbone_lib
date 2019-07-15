@@ -304,6 +304,13 @@ function (_BaseView) {
       newTable.style.width = '100%';
       return newTable;
     }
+  }, {
+    key: "reload",
+    value: function reload() {
+      if (this.datatable) {
+        this.datatable.ajax.reload();
+      }
+    }
   }]);
 
   return DatatableView;

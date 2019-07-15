@@ -214,4 +214,10 @@ class DatatableView extends BaseView {
     newTable.style.width = '100%';
     return newTable;
   }
+
+  reload() {
+    if (this.datatable) {
+      this.datatable.ajax.reload();
+    }
+  }
 }
