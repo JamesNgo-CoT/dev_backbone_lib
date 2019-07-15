@@ -155,19 +155,36 @@ function ajax(options) {
 /* exported adjustArgs */
 
 
-function adjustArgs(signature) {
+function adjustArgs() {
   var returnValue = [];
+
+  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+
+  var signature = args.pop();
   var argIndex = 0;
 
   for (var index = 0, length = signature.length; index < length; index++) {
-    if ((argIndex + 1 < 1 || arguments.length <= argIndex + 1 ? undefined : arguments[argIndex + 1]) == null) {
+    var value = void 0;
+
+    if (args[argIndex] == null) {
       argIndex = argIndex + 1;
-    } else if (signature[index] === 'array' && Array.isArray(argIndex + 1 < 1 || arguments.length <= argIndex + 1 ? undefined : arguments[argIndex + 1])) {
-      returnValue[index] = argIndex + 1 < 1 || arguments.length <= argIndex + 1 ? undefined : arguments[argIndex + 1];
+    } else if (signature[index] === 'array' && Array.isArray(args[argIndex])) {
+      value = args[argIndex];
       argIndex = argIndex + 1;
-    } else if (_typeof(argIndex + 1 < 1 || arguments.length <= argIndex + 1 ? undefined : arguments[argIndex + 1]) === signature[index]) {
-      returnValue[index] = argIndex + 1 < 1 || arguments.length <= argIndex + 1 ? undefined : arguments[argIndex + 1];
+    } else if (args[argIndex] instanceof window[signature[index]]) {
+      value = args[argIndex];
       argIndex = argIndex + 1;
+    } else if (_typeof(args[argIndex]) === signature[index]) {
+      value = args[argIndex];
+      argIndex = argIndex + 1;
+    }
+
+    returnValue.push(value);
+
+    if (argIndex >= args.length) {
+      break;
     }
   }
 

@@ -137,19 +137,32 @@ function ajax(options) {
 }
 
 /* exported adjustArgs */
-function adjustArgs(signature, ...args) {
+function adjustArgs(...args) {
   const returnValue = [];
+
+  const signature = args.pop();
 
   let argIndex = 0;
   for (let index = 0, length = signature.length; index < length; index++) {
+    let value;
+
     if (args[argIndex] == null) {
       argIndex = argIndex + 1;
     } else if (signature[index] === 'array' && Array.isArray(args[argIndex])) {
-      returnValue[index] = args[argIndex];
+      value = args[argIndex];
+      argIndex = argIndex + 1;
+    } else if (args[argIndex] instanceof window[signature[index]]) {
+      value = args[argIndex];
       argIndex = argIndex + 1;
     } else if (typeof args[argIndex] === signature[index]) {
-      returnValue[index] = args[argIndex];
+      value = args[argIndex];
       argIndex = argIndex + 1;
+    }
+
+    returnValue.push(value);
+
+    if (argIndex >= args.length) {
+      break;
     }
   }
 
