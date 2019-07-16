@@ -16,8 +16,26 @@ function buildJs() {
     .pipe(gulp.dest('./dist/'));
 }
 
-function buildJs2() {
-  return gulp.src('./src/**/*.js', { since: gulp.lastRun(buildJs) })
+function buildJsMerge() {
+  return gulp.src([
+    './src/util.js',
+    './src/core_override.js',
+    './src/backbone.js',
+    './src/basemodel.js',
+    './src/basecollection.js',
+    './src/baseview.js',
+    './src/baserouter.js',
+    './src/authmodel.js',
+    './src/comp/alert.js',
+    './src/comp/datatable.js',
+    './src/comp/dialog.js',
+    './src/comp/form.js',
+    './src/comp/highlighted.js',
+    './src/comp/loginbutton.js',
+    './src/comp/logindialog.js',
+    './src/comp/loginform.js',
+    './src/comp/nav.js'
+  ], { since: gulp.lastRun(buildJsMerge) })
     .pipe(concat('dev_backbone_lib.js'))
     .pipe(eslint())
     .pipe(eslint.format())
@@ -30,4 +48,4 @@ function copyScss() {
     .pipe(gulp.dest('./dist/'));
 }
 
-exports.default = gulp.series(cleanup, gulp.parallel(buildJs, buildJs2, copyScss));
+exports.default = gulp.series(cleanup, gulp.parallel(buildJs, buildJsMerge, copyScss));

@@ -12,8 +12,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -34,943 +32,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-/* global _ BaseModel */
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-/* exported AuthModel */
-var AuthModel =
-/*#__PURE__*/
-function (_BaseModel) {
-  _inherits(AuthModel, _BaseModel);
-
-  function AuthModel() {
-    _classCallCheck(this, AuthModel);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(AuthModel).apply(this, arguments));
-  }
-
-  _createClass(AuthModel, [{
-    key: "preinitialize",
-    value: function preinitialize(attributes) {
-      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      _get(_getPrototypeOf(AuthModel.prototype), "preinitialize", this).call(this, attributes, options); // Backbone property default value
-
-
-      this.idAttribute = options.idAttribute || 'sid'; // New property-factory override
-
-      this.app = options.app || this.app;
-    }
-  }, {
-    key: "initialize",
-    value: function initialize(attributes, options) {
-      var _this = this;
-
-      this.on("change:".concat(this.idAttribute), function () {
-        if (!_this.isNew()) {
-          _this.webStorageSave();
-        } else {
-          _this.webStorageDestroy();
-        }
-      });
-      this.webStorageFetch();
-
-      if (!this.isNew()) {
-        this.fetch()["catch"](function () {
-          _this.clear();
-        });
-      }
-
-      _get(_getPrototypeOf(AuthModel.prototype), "initialize", this).call(this, attributes, options);
-    }
-  }, {
-    key: "parse",
-    value: function parse(response, options) {
-      this.clear({
-        silent: true
-      });
-      delete response['@odata.context'];
-      delete response.pwd;
-      return _get(_getPrototypeOf(AuthModel.prototype), "parse", this).call(this, response, options);
-    }
-  }, {
-    key: "save",
-    value: function save() {
-      var attributes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var _attributes$app = attributes.app,
-          app = _attributes$app === void 0 ? _.result(this, 'app') : _attributes$app,
-          _attributes$user = attributes.user,
-          user = _attributes$user === void 0 ? this.get('user') : _attributes$user,
-          _attributes$pwd = attributes.pwd,
-          pwd = _attributes$pwd === void 0 ? this.get('pwd') : _attributes$pwd;
-      this.clear({
-        silent: true
-      });
-      return _get(_getPrototypeOf(AuthModel.prototype), "save", this).call(this, {
-        app: app,
-        user: user,
-        pwd: pwd
-      }, options);
-    }
-  }, {
-    key: "destroy",
-    value: function destroy() {
-      var _this2 = this;
-
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      options.headers = options.headers || {};
-      options.headers.Authorization = this.get('userID');
-      return _get(_getPrototypeOf(AuthModel.prototype), "destroy", this).call(this, options)["finally"](function () {
-        return _this2.clear();
-      });
-    }
-  }, {
-    key: "app",
-    value: function app() {
-      return 'cotapp';
-    }
-  }, {
-    key: "login",
-    value: function login(options) {
-      return this.save(options);
-    }
-  }, {
-    key: "logout",
-    value: function logout() {
-      return this.destroy();
-    }
-  }, {
-    key: "isLoggedIn",
-    value: function isLoggedIn() {
-      return !this.isNew();
-    }
-  }, {
-    key: "authentication",
-    value: function authentication(options) {
-      var _this3 = this;
-
-      return new Promise(function (resolve, reject) {
-        if (!_this3.isLoggedIn()) {
-          resolve(false);
-        } else {
-          _this3.fetch(options).then(function () {
-            resolve(_this3.isLoggedIn());
-          }, function (error) {
-            reject(error);
-          });
-        }
-      });
-    }
-  }]);
-
-  return AuthModel;
-}(BaseModel);
-/* global _ Backbone ajax */
-
-
-Backbone.ajax = ajax;
-Backbone.authModel = null;
-
-Backbone.sync = function (backboneSync) {
-  return function (method, model) {
-    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    options.headers = options.headers || {};
-    options.headers.Accept = options.headers.Accept || 'application/json; charset=utf-8';
-
-    if (!options.headers.Authorization) {
-      var authModel = _.result(model, 'authModel') || _.result(Backbone, 'authModel');
-
-      var addAuthorization = _.result(model, 'addAuthorization');
-
-      if (authModel && !authModel.isNew() && addAuthorization) {
-        options.headers.Authorization = "AuthSession ".concat(authModel.get(authModel.idAttribute));
-      }
-    }
-
-    if (method === 'create' || method === 'update' || method === 'patch') {
-      options.contentType = options.contentType || 'application/json; charset=utf-8';
-
-      if (!options.data) {
-        var json = options.attrs || model.toJSON(options);
-        delete json['@odata.context'];
-        delete json['@odata.etag'];
-        delete json['__CreatedOn'];
-        delete json['__ModifiedOn'];
-        delete json['__Owner'];
-        var adjustSyncJson = options.adjustSyncJson || model.adjustSyncJson;
-
-        if (adjustSyncJson) {
-          json = adjustSyncJson(json);
-        }
-
-        options.data = JSON.stringify(json);
-      }
-    }
-
-    return backboneSync.call(_this4, method, model, options);
-  };
-}(Backbone.sync);
-/* global _ Backbone BaseModel */
-
-/* exported BaseCollection */
-
-
-var BaseCollection =
-/*#__PURE__*/
-function (_Backbone$Collection) {
-  _inherits(BaseCollection, _Backbone$Collection);
-
-  function BaseCollection() {
-    _classCallCheck(this, BaseCollection);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(BaseCollection).apply(this, arguments));
-  }
-
-  _createClass(BaseCollection, [{
-    key: "preinitialize",
-    value: function preinitialize(models) {
-      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      // Backbone property-factory originally not passed by constructor
-      this.model = options.model || this.model;
-      this.url = options.url || this.url; // New property-factory override
-
-      this.webStorage = options.webStorage || this.webStorage;
-      this.webStorageKey = options.webStorageKey || this.webStorageKey;
-      this.addAuthorization = options.addAuthorization || this.addAuthorization;
-      this.authModel = options.authModel || this.authModel;
-
-      _get(_getPrototypeOf(BaseCollection.prototype), "preinitialize", this).call(this, models, options);
-    }
-  }, {
-    key: "model",
-    value: function model(attributes, options) {
-      // NOTE Backbone.Collection does not use model function without a prototype
-      return new BaseModel(attributes, options);
-    }
-  }, {
-    key: "fetch",
-    value: function fetch(options) {
-      if (options && options.query) {
-        options.url = "".concat(_.result(this, 'url'), "?").concat(options.query);
-      }
-
-      return _get(_getPrototypeOf(BaseCollection.prototype), "fetch", this).call(this, options);
-    }
-  }, {
-    key: "parse",
-    value: function parse(response, options) {
-      if (response && Array.isArray(response.value)) {
-        response = response.value;
-      }
-
-      return _get(_getPrototypeOf(BaseCollection.prototype), "parse", this).call(this, response, options);
-    }
-  }, {
-    key: "webStorage",
-    value: function webStorage() {
-      return localStorage;
-    }
-  }, {
-    key: "webStorageSync",
-    value: function webStorageSync(method, model) {
-      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-      var webStorage = _.result(options, 'webStorage') || _.result(model, 'webStorage');
-
-      var webStorageKey = _.result(options, 'webStorageKey') || _.result(model, 'webStorageKey');
-
-      switch (method) {
-        case 'read':
-          model.set(model.webStorageParse(JSON.parse(webStorage.getItem(webStorageKey))), options);
-          break;
-
-        case 'create':
-        case 'update':
-          webStorage.setItem(webStorageKey, JSON.stringify(options.attrs || model.toJSON(options)));
-          break;
-
-        case 'delete':
-          webStorage.removeItem(webStorageKey);
-          break;
-      }
-    }
-  }, {
-    key: "webStorageParse",
-    value: function webStorageParse(json, options) {
-      return json;
-    }
-  }, {
-    key: "webStorageFetch",
-    value: function webStorageFetch(options) {
-      this.webStorageSync('read', this, options);
-    }
-  }, {
-    key: "webStorageSave",
-    value: function webStorageSave(attributes, options) {
-      if (attributes && !options.attrs) {
-        options.attrs = attributes;
-      }
-
-      if (this.isNew()) {
-        this.webStorageSync('create', this, options);
-      } else {
-        this.webStorageSync('update', this, options);
-      }
-    }
-  }, {
-    key: "webStorageDestroy",
-    value: function webStorageDestroy(options) {
-      this.webStorageSync('delete', this, options);
-    }
-  }, {
-    key: "addAuthorization",
-    value: function addAuthorization() {
-      return false;
-    }
-  }]);
-
-  return BaseCollection;
-}(Backbone.Collection);
-/* global _ Backbone */
-
-/* exported BaseModel */
-
-
-var BaseModel =
-/*#__PURE__*/
-function (_Backbone$Model) {
-  _inherits(BaseModel, _Backbone$Model);
-
-  function BaseModel() {
-    _classCallCheck(this, BaseModel);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(BaseModel).apply(this, arguments));
-  }
-
-  _createClass(BaseModel, [{
-    key: "preinitialize",
-    value: function preinitialize(attributes) {
-      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      // Backbone property-factory originally not passed by constructor
-      this.urlRoot = options.urlRoot || this.urlRoot; // New property-factory override
-
-      this.webStorage = options.webStorage || this.webStorage;
-      this.webStorageKey = options.webStorageKey || this.webStorageKey;
-      this.addAuthorization = options.addAuthorization || this.addAuthorization;
-      this.authModel = options.authModel || this.authModel;
-
-      _get(_getPrototypeOf(BaseModel.prototype), "preinitialize", this).call(this, attributes, options);
-    }
-  }, {
-    key: "url",
-    value: function url() {
-      if (this.isNew()) {
-        return typeof _get(_getPrototypeOf(BaseModel.prototype), "url", this) === 'function' ? _get(_getPrototypeOf(BaseModel.prototype), "url", this).call(this) : _get(_getPrototypeOf(BaseModel.prototype), "url", this);
-      }
-
-      var base = _.result(this, 'urlRoot') || _.result(this.collection, 'url');
-
-      var id = this.get(this.idAttribute);
-      return "".concat(base.replace(/\/$/, ''), "('").concat(encodeURIComponent(id), "')");
-    }
-  }, {
-    key: "webStorage",
-    value: function webStorage() {
-      return localStorage;
-    }
-  }, {
-    key: "webStorageSync",
-    value: function webStorageSync(method, model) {
-      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-      var webStorage = _.result(options, 'webStorage') || _.result(model, 'webStorage');
-
-      var webStorageKey = _.result(options, 'webStorageKey') || _.result(model, 'webStorageKey');
-
-      switch (method) {
-        case 'read':
-          model.set(model.webStorageParse(JSON.parse(webStorage.getItem(webStorageKey))), options);
-          break;
-
-        case 'create':
-        case 'update':
-          webStorage.setItem(webStorageKey, JSON.stringify(options.attrs || model.toJSON(options)));
-          break;
-
-        case 'delete':
-          webStorage.removeItem(webStorageKey);
-          break;
-      }
-    }
-  }, {
-    key: "webStorageParse",
-    value: function webStorageParse(json, options) {
-      return json;
-    }
-  }, {
-    key: "webStorageFetch",
-    value: function webStorageFetch(options) {
-      this.webStorageSync('read', this, options);
-    }
-  }, {
-    key: "webStorageSave",
-    value: function webStorageSave(attributes, options) {
-      if (attributes && !options.attrs) {
-        options.attrs = attributes;
-      }
-
-      if (this.isNew()) {
-        this.webStorageSync('create', this, options);
-      } else {
-        this.webStorageSync('update', this, options);
-      }
-    }
-  }, {
-    key: "webStorageDestroy",
-    value: function webStorageDestroy(options) {
-      this.webStorageSync('delete', this, options);
-    }
-  }, {
-    key: "addAuthorization",
-    value: function addAuthorization() {
-      return false;
-    }
-  }]);
-
-  return BaseModel;
-}(Backbone.Model);
-/* global _ Backbone */
-
-/* exported BaseRouter */
-
-
-var BaseRouter =
-/*#__PURE__*/
-function (_Backbone$Router) {
-  _inherits(BaseRouter, _Backbone$Router);
-
-  function BaseRouter() {
-    _classCallCheck(this, BaseRouter);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(BaseRouter).apply(this, arguments));
-  }
-
-  _createClass(BaseRouter, [{
-    key: "preinitialize",
-    value: function preinitialize() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      // New property-factory override
-      this.defaultFragment = options.defaultFragment || this.defaultFragment; // New property
-
-      this.lastFragment = null;
-      this.cleanupFunction = null;
-
-      _get(_getPrototypeOf(BaseRouter.prototype), "preinitialize", this).call(this, options);
-    }
-  }, {
-    key: "routes",
-    value: function routes() {
-      var _ref;
-
-      return _ref = {}, _defineProperty(_ref, 'home', function home() {}), _defineProperty(_ref, '*default', 'routeDefault'), _ref;
-    }
-  }, {
-    key: "route",
-    value: function route(_route, name, callback) {
-      var oldCallback;
-
-      if (typeof callback === 'function') {
-        oldCallback = callback;
-      } else if (typeof name === 'function') {
-        oldCallback = name;
-      } else if (typeof name === 'string' && typeof this[name] === 'function') {
-        oldCallback = this[name];
-      }
-
-      if (typeof oldCallback === 'function' && oldCallback !== this.routeDefault) {
-        var newCallback = function newCallback() {
-          var _oldCallback;
-
-          this.lastFragment = Backbone.history.getFragment();
-
-          for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-          }
-
-          return (_oldCallback = oldCallback).call.apply(_oldCallback, [this].concat(args));
-        };
-
-        if (typeof callback === 'function') {
-          callback = newCallback;
-        } else if (typeof name === 'function') {
-          name = newCallback;
-        } else if (typeof name === 'string' && typeof this[name] === 'function') {
-          this[name] = newCallback;
-        }
-      }
-
-      return _get(_getPrototypeOf(BaseRouter.prototype), "route", this).call(this, _route, name, callback);
-    }
-  }, {
-    key: "execute",
-    value: function execute(callback, args, name) {
-      var _this5 = this;
-
-      var cleanupFunctionReturnValue;
-
-      if (typeof this.cleanupFunction === 'function') {
-        cleanupFunctionReturnValue = this.cleanupFunction.call(this, name);
-
-        if (cleanupFunctionReturnValue !== false) {
-          this.cleanupFunction = null;
-        }
-      }
-
-      if (typeof callback === 'function' && cleanupFunctionReturnValue !== false) {
-        Promise.resolve().then(function () {
-          return callback.call.apply(callback, [_this5].concat(_toConsumableArray(args)));
-        }).then(function (cleanupFunction) {
-          if (typeof cleanupFunction === 'function') {
-            _this5.cleanupFunction = cleanupFunction;
-          }
-        });
-      }
-
-      if (cleanupFunctionReturnValue === false) {
-        this.routeDefault();
-      }
-    }
-  }, {
-    key: "defaultFragment",
-    value: function defaultFragment() {
-      return 'home';
-    }
-  }, {
-    key: "routeDefault",
-    value: function routeDefault() {
-      if (typeof this.lastFragment === 'string') {
-        this.navigate(this.lastFragment, {
-          trigger: false,
-          replace: true
-        });
-      } else {
-        var defaultFragment = _.result(this, 'defaultFragment');
-
-        if (typeof defaultFragment === 'string') {
-          this.navigate(defaultFragment, {
-            trigger: true
-          });
-        }
-      }
-    }
-  }]);
-
-  return BaseRouter;
-}(Backbone.Router);
-/* global Backbone */
-
-/* exported BaseView */
-
-
-var BaseView =
-/*#__PURE__*/
-function (_Backbone$View) {
-  _inherits(BaseView, _Backbone$View);
-
-  function BaseView() {
-    _classCallCheck(this, BaseView);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(BaseView).apply(this, arguments));
-  }
-
-  _createClass(BaseView, [{
-    key: "preinitialize",
-    value: function preinitialize() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-      _get(_getPrototypeOf(BaseView.prototype), "preinitialize", this).call(this, options);
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var linkButton = this.el.querySelector('a.btn:not([role="button"])');
-
-      while (linkButton) {
-        linkButton.setAttribute('role', 'button');
-        linkButton.addEventListener('keydown', function (event) {
-          if (event.which === 32) {
-            event.preventDefault();
-            event.target.click();
-          }
-        });
-        linkButton = this.el.querySelector('a.btn:not([role="button"])');
-      }
-
-      return Promise.resolve();
-    }
-  }]);
-
-  return BaseView;
-}(Backbone.View);
-/* global ajax */
-////////////////////////////////////////////////////////////////////////////////
-// COT APP
-////////////////////////////////////////////////////////////////////////////////
-
-
-if (window.cot_app) {
-  var originalRender = window.cot_app.prototype.render;
-
-  window.cot_app.prototype.render = function () {
-    this.titleElement = document.createElement('span');
-    this.titleElement.setAttribute('tabindex', '-1');
-    document.querySelector('#app-header h1').appendChild(this.titleElement);
-    return originalRender.call(this);
-  };
-
-  window.cot_app.prototype.setTitle = function (title, subTitle) {
-    if (this.titleElement == null) {
-      return;
-    }
-
-    this.titleElement.innerHTML = title;
-    var documentTitles = [this.name];
-
-    if (documentTitles.indexOf(title) === -1) {
-      documentTitles.unshift(title);
-    }
-
-    if (subTitle != null) {
-      documentTitles.unshift(subTitle);
-    }
-
-    document.title = documentTitles.filter(function (title) {
-      return title;
-    }).join(' - ');
-  };
-} ////////////////////////////////////////////////////////////////////////////////
-// COT FORM
-////////////////////////////////////////////////////////////////////////////////
-
-
-if (window.cot_form) {
-  var originalAddformfield = window.cot_form.prototype.addformfield;
-
-  window.cot_form.prototype.addformfield = function (fieldDefinition, fieldContainer) {
-    originalAddformfield.call(this, fieldDefinition, fieldContainer);
-
-    if (fieldDefinition['readOnly'] === true) {
-      switch (fieldDefinition['type']) {
-        case 'email':
-        case 'number':
-        case 'password':
-        case 'text':
-          fieldContainer.querySelector("[type=\"".concat(fieldDefinition['type'], "\"]")).setAttribute('readonly', '');
-          break;
-
-        case 'phone':
-          fieldContainer.querySelector('[type="tel"]').setAttribute('readonly', '');
-          break;
-
-        case 'textarea':
-          fieldContainer.querySelector('textarea').setAttribute('readonly', '');
-          break;
-      }
-    }
-  };
-
-  var originalValidatorOptions = window.cot_form.prototype.validatorOptions;
-
-  window.cot_form.prototype.validatorOptions = function (fieldDefinition) {
-    var returnValue = originalValidatorOptions.call(this, fieldDefinition);
-
-    if (fieldDefinition['excluded'] != null) {
-      returnValue['excluded'] = fieldDefinition['excluded'];
-    }
-
-    return returnValue;
-  };
-} ////////////////////////////////////////////////////////////////////////////////
-// COT FORM (MAIN)
-////////////////////////////////////////////////////////////////////////////////
-
-
-if (window.CotForm) {
-  var _originalRender = window.CotForm.prototype.render;
-
-  window.CotForm.prototype.render = function () {
-    var _this7 = this;
-
-    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
-    }
-
-    function renderLoop(_ref2) {
-      var definition = _ref2.definition,
-          renderSection = _ref2.renderSection,
-          renderRow = _ref2.renderRow,
-          renderField = _ref2.renderField;
-      var renderPromises = [];
-      var sections = definition.sections;
-      sections.forEach(function (section) {
-        renderPromises.push(renderSection({
-          definition: definition,
-          section: section
-        }));
-        var rows = section.rows;
-        rows.forEach(function (row) {
-          renderPromises.push(renderRow({
-            definition: definition,
-            section: section,
-            row: row
-          }));
-          var fields = row.fields;
-
-          if (fields) {
-            fields.forEach(function (field) {
-              renderPromises.push(renderField({
-                definition: definition,
-                section: section,
-                row: row,
-                field: field
-              }));
-            });
-          }
-
-          var grid = row.grid;
-
-          if (grid) {
-            var _fields = grid.fields;
-
-            _fields.forEach(function (field) {
-              renderPromises.push(renderField({
-                definition: definition,
-                section: section,
-                row: row,
-                field: field,
-                grid: grid
-              }));
-            });
-          }
-
-          var repeatControl = row.repeatControl;
-
-          if (repeatControl) {
-            var repeatControlRows = repeatControl.rows;
-            repeatControlRows.forEach(function (repeatControlRow) {
-              var fields = row.fields;
-              fields.forEach(function (field) {
-                renderPromises.push(renderField({
-                  definition: definition,
-                  section: section,
-                  row: row,
-                  field: field,
-                  repeatControl: repeatControl,
-                  repeatControlRow: repeatControlRow
-                }));
-              });
-            });
-          }
-        });
-      });
-      return Promise.all(renderPromises);
-    }
-
-    function finalizeRenderer(renderer) {
-      if (typeof renderer === 'function') {
-        return renderer;
-      } else if (typeof renderer === 'string') {
-        if (renderer.indexOf('function(') === 0) {
-          return Function("return ".concat(renderer))();
-        } else if (typeof window[renderer] === 'function') {
-          return window[renderer];
-        }
-      }
-    }
-
-    var cotForm = this;
-    var model = cotForm.getModel();
-    var view = cotForm.getView();
-    var definition = this._definition;
-    return Promise.resolve().then(function () {
-      return renderLoop({
-        definition: definition,
-        renderSection: function renderSection(_ref3) {
-          var definition = _ref3.definition,
-              section = _ref3.section;
-          var renderer = finalizeRenderer(section.preRender);
-
-          if (renderer) {
-            return renderer.call(this, {
-              cotForm: cotForm,
-              model: model,
-              view: view,
-              definition: definition,
-              section: section
-            });
-          }
-        },
-        renderRow: function renderRow(_ref4) {
-          var definition = _ref4.definition,
-              section = _ref4.section,
-              row = _ref4.row;
-          var renderer = finalizeRenderer(row.preRender);
-
-          if (renderer) {
-            return renderer.call(this, {
-              cotForm: cotForm,
-              model: model,
-              view: view,
-              definition: definition,
-              section: section,
-              row: row
-            });
-          }
-        },
-        renderField: function renderField(_ref5) {
-          var _this6 = this;
-
-          var definition = _ref5.definition,
-              section = _ref5.section,
-              row = _ref5.row,
-              field = _ref5.field,
-              grid = _ref5.grid,
-              repeatControl = _ref5.repeatControl,
-              repeatControlRow = _ref5.repeatControlRow;
-          return Promise.resolve().then(function () {
-            if (typeof field.choices === 'string') {
-              return ajax({
-                url: field.choices
-              }).then(function (data) {
-                field.choices = data;
-              });
-            }
-          }).then(function () {
-            if (field.choices) {
-              var value;
-
-              if (field.value != null) {
-                value = field.value;
-              } else if (field.bindTo != null && model.has(field.bindTo)) {
-                value = model.get(field.bindTo);
-              }
-
-              if (value != null) {
-                var choices = field.choices.map(function (choice) {
-                  return choice.value != null ? choice.value : choice.text;
-                });
-
-                if (choices.indexOf(value) === -1) {
-                  field.choices.unshift({
-                    text: value,
-                    value: value
-                  });
-                }
-              }
-            }
-
-            var renderer = finalizeRenderer(field.preRender);
-
-            if (renderer) {
-              return renderer.call(_this6, {
-                cotForm: cotForm,
-                model: model,
-                view: view,
-                definition: definition,
-                section: section,
-                row: row,
-                field: field,
-                grid: grid,
-                repeatControl: repeatControl,
-                repeatControlRow: repeatControlRow
-              });
-            }
-          });
-        }
-      });
-    }).then(function () {
-      return _originalRender.call.apply(_originalRender, [_this7].concat(args));
-    }).then(function () {
-      return renderLoop({
-        definition: definition,
-        renderSection: function renderSection(_ref6) {
-          var definition = _ref6.definition,
-              section = _ref6.section;
-          var renderer = finalizeRenderer(section.postRender);
-
-          if (renderer) {
-            return renderer.call(this, {
-              cotForm: cotForm,
-              model: model,
-              view: view,
-              definition: definition,
-              section: section
-            });
-          }
-        },
-        renderRow: function renderRow(_ref7) {
-          var definition = _ref7.definition,
-              section = _ref7.section,
-              row = _ref7.row;
-          var renderer = finalizeRenderer(row.postRender);
-
-          if (renderer) {
-            return renderer.call(this, {
-              cotForm: cotForm,
-              model: model,
-              view: view,
-              definition: definition,
-              section: section,
-              row: row
-            });
-          }
-        },
-        renderField: function renderField(_ref8) {
-          var definition = _ref8.definition,
-              section = _ref8.section,
-              row = _ref8.row,
-              field = _ref8.field,
-              grid = _ref8.grid,
-              repeatControl = _ref8.repeatControl,
-              repeatControlRow = _ref8.repeatControlRow;
-          var renderer = finalizeRenderer(field.postRender);
-
-          if (renderer) {
-            return renderer.call(this, {
-              cotForm: cotForm,
-              model: model,
-              view: view,
-              definition: definition,
-              section: section,
-              row: row,
-              field: field,
-              grid: grid,
-              repeatControl: repeatControl,
-              repeatControlRow: repeatControlRow
-            });
-          }
-        }
-      });
-    });
-  };
-
-  window.CotForm.prototype.getModel = function () {
-    return this._model;
-  };
-
-  window.CotForm.prototype.setView = function (view) {
-    this._view = view;
-  };
-
-  window.CotForm.prototype.getView = function () {
-    return this._view;
-  };
-}
 /* global $ */
 
 /* exported toQueryString */
-
-
 function toQueryString(queryObject) {
   if (Array.isArray(queryObject)) {
     var array = [];
@@ -1174,7 +240,7 @@ function el(tag, attrs, childEls, cbk) {
   element._childEls = childEls;
 
   element.childEls = function (childEls) {
-    var _this8 = this;
+    var _this = this;
 
     var reRender = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
@@ -1203,7 +269,7 @@ function el(tag, attrs, childEls, cbk) {
         var fromFunction2 = false;
 
         if (typeof child === 'function') {
-          child = child.call(_this8);
+          child = child.call(_this);
           fromFunction2 = true;
         }
 
@@ -1250,16 +316,950 @@ function el(tag, attrs, childEls, cbk) {
 
 ['a', 'abbr', 'address', 'article', 'aside', 'audio', 'b', 'base', 'bdi', 'bdo', 'blockquote', 'body', 'br', 'button', 'canvas', 'caption', 'cite', 'code', 'col', 'colgroup', 'comment', 'datalist', 'dd', 'del', 'details', 'dfn', 'dialog', 'div', 'dl', 'dt', 'em', 'embed', 'fieldset', 'figcaption', 'figure', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hr', 'html', 'i', 'iframe', 'img', 'input', 'ins', 'kbd', 'label', 'legend', 'li', 'link', 'main', 'map', 'mark', 'menu', 'meta', 'meter', 'nav', 'noscript', 'object', 'ol', 'optgroup', 'option', 'output', 'p', 'param', 'pre', 'progress', 'q', 'rp', 'rt', 'ruby', 's', 'samp', 'script', 'section', 'select', 'small', 'source', 'span', 'strong', 'style', 'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'time', 'title', 'tr', 'track', 'u', 'ul', 'var', 'video', 'wbr'].forEach(function (tag) {
   return el[tag] = function () {
-    for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-      args[_key3] = arguments[_key3];
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
     }
 
     return el.apply(void 0, [tag].concat(args));
   };
 });
+/* global ajax */
+////////////////////////////////////////////////////////////////////////////////
+// COT APP
+////////////////////////////////////////////////////////////////////////////////
+
+if (window.cot_app) {
+  var originalRender = window.cot_app.prototype.render;
+
+  window.cot_app.prototype.render = function () {
+    this.titleElement = document.createElement('span');
+    this.titleElement.setAttribute('tabindex', '-1');
+    document.querySelector('#app-header h1').appendChild(this.titleElement);
+    return originalRender.call(this);
+  };
+
+  window.cot_app.prototype.setTitle = function (title, subTitle) {
+    if (this.titleElement == null) {
+      return;
+    }
+
+    this.titleElement.innerHTML = title;
+    var documentTitles = [this.name];
+
+    if (documentTitles.indexOf(title) === -1) {
+      documentTitles.unshift(title);
+    }
+
+    if (subTitle != null) {
+      documentTitles.unshift(subTitle);
+    }
+
+    document.title = documentTitles.filter(function (title) {
+      return title;
+    }).join(' - ');
+  };
+} ////////////////////////////////////////////////////////////////////////////////
+// COT FORM
+////////////////////////////////////////////////////////////////////////////////
+
+
+if (window.cot_form) {
+  var originalAddformfield = window.cot_form.prototype.addformfield;
+
+  window.cot_form.prototype.addformfield = function (fieldDefinition, fieldContainer) {
+    originalAddformfield.call(this, fieldDefinition, fieldContainer);
+
+    if (fieldDefinition['readOnly'] === true) {
+      switch (fieldDefinition['type']) {
+        case 'email':
+        case 'number':
+        case 'password':
+        case 'text':
+          fieldContainer.querySelector("[type=\"".concat(fieldDefinition['type'], "\"]")).setAttribute('readonly', '');
+          break;
+
+        case 'phone':
+          fieldContainer.querySelector('[type="tel"]').setAttribute('readonly', '');
+          break;
+
+        case 'textarea':
+          fieldContainer.querySelector('textarea').setAttribute('readonly', '');
+          break;
+      }
+    }
+  };
+
+  var originalValidatorOptions = window.cot_form.prototype.validatorOptions;
+
+  window.cot_form.prototype.validatorOptions = function (fieldDefinition) {
+    var returnValue = originalValidatorOptions.call(this, fieldDefinition);
+
+    if (fieldDefinition['excluded'] != null) {
+      returnValue['excluded'] = fieldDefinition['excluded'];
+    }
+
+    return returnValue;
+  };
+} ////////////////////////////////////////////////////////////////////////////////
+// COT FORM (MAIN)
+////////////////////////////////////////////////////////////////////////////////
+
+
+if (window.CotForm) {
+  var _originalRender = window.CotForm.prototype.render;
+
+  window.CotForm.prototype.render = function () {
+    var _this3 = this;
+
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+
+    function renderLoop(_ref) {
+      var definition = _ref.definition,
+          renderSection = _ref.renderSection,
+          renderRow = _ref.renderRow,
+          renderField = _ref.renderField;
+      var renderPromises = [];
+      var sections = definition.sections;
+      sections.forEach(function (section) {
+        renderPromises.push(renderSection({
+          definition: definition,
+          section: section
+        }));
+        var rows = section.rows;
+        rows.forEach(function (row) {
+          renderPromises.push(renderRow({
+            definition: definition,
+            section: section,
+            row: row
+          }));
+          var fields = row.fields;
+
+          if (fields) {
+            fields.forEach(function (field) {
+              renderPromises.push(renderField({
+                definition: definition,
+                section: section,
+                row: row,
+                field: field
+              }));
+            });
+          }
+
+          var grid = row.grid;
+
+          if (grid) {
+            var _fields = grid.fields;
+
+            _fields.forEach(function (field) {
+              renderPromises.push(renderField({
+                definition: definition,
+                section: section,
+                row: row,
+                field: field,
+                grid: grid
+              }));
+            });
+          }
+
+          var repeatControl = row.repeatControl;
+
+          if (repeatControl) {
+            var repeatControlRows = repeatControl.rows;
+            repeatControlRows.forEach(function (repeatControlRow) {
+              var fields = row.fields;
+              fields.forEach(function (field) {
+                renderPromises.push(renderField({
+                  definition: definition,
+                  section: section,
+                  row: row,
+                  field: field,
+                  repeatControl: repeatControl,
+                  repeatControlRow: repeatControlRow
+                }));
+              });
+            });
+          }
+        });
+      });
+      return Promise.all(renderPromises);
+    }
+
+    function finalizeRenderer(renderer) {
+      if (typeof renderer === 'function') {
+        return renderer;
+      } else if (typeof renderer === 'string') {
+        if (renderer.indexOf('function(') === 0) {
+          return Function("return ".concat(renderer))();
+        } else if (typeof window[renderer] === 'function') {
+          return window[renderer];
+        }
+      }
+    }
+
+    var cotForm = this;
+    var model = cotForm.getModel();
+    var view = cotForm.getView();
+    var definition = this._definition;
+    return Promise.resolve().then(function () {
+      return renderLoop({
+        definition: definition,
+        renderSection: function renderSection(_ref2) {
+          var definition = _ref2.definition,
+              section = _ref2.section;
+          var renderer = finalizeRenderer(section.preRender);
+
+          if (renderer) {
+            return renderer.call(this, {
+              cotForm: cotForm,
+              model: model,
+              view: view,
+              definition: definition,
+              section: section
+            });
+          }
+        },
+        renderRow: function renderRow(_ref3) {
+          var definition = _ref3.definition,
+              section = _ref3.section,
+              row = _ref3.row;
+          var renderer = finalizeRenderer(row.preRender);
+
+          if (renderer) {
+            return renderer.call(this, {
+              cotForm: cotForm,
+              model: model,
+              view: view,
+              definition: definition,
+              section: section,
+              row: row
+            });
+          }
+        },
+        renderField: function renderField(_ref4) {
+          var _this2 = this;
+
+          var definition = _ref4.definition,
+              section = _ref4.section,
+              row = _ref4.row,
+              field = _ref4.field,
+              grid = _ref4.grid,
+              repeatControl = _ref4.repeatControl,
+              repeatControlRow = _ref4.repeatControlRow;
+          return Promise.resolve().then(function () {
+            if (typeof field.choices === 'string') {
+              return ajax({
+                url: field.choices
+              }).then(function (data) {
+                field.choices = data;
+              });
+            }
+          }).then(function () {
+            if (field.choices) {
+              var value;
+
+              if (field.value != null) {
+                value = field.value;
+              } else if (field.bindTo != null && model.has(field.bindTo)) {
+                value = model.get(field.bindTo);
+              }
+
+              if (value != null) {
+                var choices = field.choices.map(function (choice) {
+                  return choice.value != null ? choice.value : choice.text;
+                });
+
+                if (choices.indexOf(value) === -1) {
+                  field.choices.unshift({
+                    text: value,
+                    value: value
+                  });
+                }
+              }
+            }
+
+            var renderer = finalizeRenderer(field.preRender);
+
+            if (renderer) {
+              return renderer.call(_this2, {
+                cotForm: cotForm,
+                model: model,
+                view: view,
+                definition: definition,
+                section: section,
+                row: row,
+                field: field,
+                grid: grid,
+                repeatControl: repeatControl,
+                repeatControlRow: repeatControlRow
+              });
+            }
+          });
+        }
+      });
+    }).then(function () {
+      return _originalRender.call.apply(_originalRender, [_this3].concat(args));
+    }).then(function () {
+      return renderLoop({
+        definition: definition,
+        renderSection: function renderSection(_ref5) {
+          var definition = _ref5.definition,
+              section = _ref5.section;
+          var renderer = finalizeRenderer(section.postRender);
+
+          if (renderer) {
+            return renderer.call(this, {
+              cotForm: cotForm,
+              model: model,
+              view: view,
+              definition: definition,
+              section: section
+            });
+          }
+        },
+        renderRow: function renderRow(_ref6) {
+          var definition = _ref6.definition,
+              section = _ref6.section,
+              row = _ref6.row;
+          var renderer = finalizeRenderer(row.postRender);
+
+          if (renderer) {
+            return renderer.call(this, {
+              cotForm: cotForm,
+              model: model,
+              view: view,
+              definition: definition,
+              section: section,
+              row: row
+            });
+          }
+        },
+        renderField: function renderField(_ref7) {
+          var definition = _ref7.definition,
+              section = _ref7.section,
+              row = _ref7.row,
+              field = _ref7.field,
+              grid = _ref7.grid,
+              repeatControl = _ref7.repeatControl,
+              repeatControlRow = _ref7.repeatControlRow;
+          var renderer = finalizeRenderer(field.postRender);
+
+          if (renderer) {
+            return renderer.call(this, {
+              cotForm: cotForm,
+              model: model,
+              view: view,
+              definition: definition,
+              section: section,
+              row: row,
+              field: field,
+              grid: grid,
+              repeatControl: repeatControl,
+              repeatControlRow: repeatControlRow
+            });
+          }
+        }
+      });
+    });
+  };
+
+  window.CotForm.prototype.getModel = function () {
+    return this._model;
+  };
+
+  window.CotForm.prototype.setView = function (view) {
+    this._view = view;
+  };
+
+  window.CotForm.prototype.getView = function () {
+    return this._view;
+  };
+}
+/* global _ Backbone ajax */
+
+
+Backbone.ajax = ajax;
+Backbone.authModel = null;
+
+Backbone.sync = function (backboneSync) {
+  return function (method, model) {
+    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    options.headers = options.headers || {};
+    options.headers.Accept = options.headers.Accept || 'application/json; charset=utf-8';
+
+    if (!options.headers.Authorization) {
+      var authModel = _.result(model, 'authModel') || _.result(Backbone, 'authModel');
+
+      var addAuthorization = _.result(model, 'addAuthorization');
+
+      if (authModel && !authModel.isNew() && addAuthorization) {
+        options.headers.Authorization = "AuthSession ".concat(authModel.get(authModel.idAttribute));
+      }
+    }
+
+    if (method === 'create' || method === 'update' || method === 'patch') {
+      options.contentType = options.contentType || 'application/json; charset=utf-8';
+
+      if (!options.data) {
+        var json = options.attrs || model.toJSON(options);
+        delete json['@odata.context'];
+        delete json['@odata.etag'];
+        delete json['__CreatedOn'];
+        delete json['__ModifiedOn'];
+        delete json['__Owner'];
+        var adjustSyncJson = options.adjustSyncJson || model.adjustSyncJson;
+
+        if (adjustSyncJson) {
+          json = adjustSyncJson(json);
+        }
+
+        options.data = JSON.stringify(json);
+      }
+    }
+
+    return backboneSync.call(_this4, method, model, options);
+  };
+}(Backbone.sync);
+/* global _ Backbone */
+
+/* exported BaseModel */
+
+
+var BaseModel =
+/*#__PURE__*/
+function (_Backbone$Model) {
+  _inherits(BaseModel, _Backbone$Model);
+
+  function BaseModel() {
+    _classCallCheck(this, BaseModel);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(BaseModel).apply(this, arguments));
+  }
+
+  _createClass(BaseModel, [{
+    key: "preinitialize",
+    value: function preinitialize(attributes) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      // Backbone property-factory originally not passed by constructor
+      this.urlRoot = options.urlRoot || this.urlRoot; // New property-factory override
+
+      this.webStorage = options.webStorage || this.webStorage;
+      this.webStorageKey = options.webStorageKey || this.webStorageKey;
+      this.addAuthorization = options.addAuthorization || this.addAuthorization;
+      this.authModel = options.authModel || this.authModel;
+
+      _get(_getPrototypeOf(BaseModel.prototype), "preinitialize", this).call(this, attributes, options);
+    }
+  }, {
+    key: "url",
+    value: function url() {
+      if (this.isNew()) {
+        return typeof _get(_getPrototypeOf(BaseModel.prototype), "url", this) === 'function' ? _get(_getPrototypeOf(BaseModel.prototype), "url", this).call(this) : _get(_getPrototypeOf(BaseModel.prototype), "url", this);
+      }
+
+      var base = _.result(this, 'urlRoot') || _.result(this.collection, 'url');
+
+      var id = this.get(this.idAttribute);
+      return "".concat(base.replace(/\/$/, ''), "('").concat(encodeURIComponent(id), "')");
+    }
+  }, {
+    key: "webStorage",
+    value: function webStorage() {
+      return localStorage;
+    }
+  }, {
+    key: "webStorageSync",
+    value: function webStorageSync(method, model) {
+      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+      var webStorage = _.result(options, 'webStorage') || _.result(model, 'webStorage');
+
+      var webStorageKey = _.result(options, 'webStorageKey') || _.result(model, 'webStorageKey');
+
+      switch (method) {
+        case 'read':
+          model.set(model.webStorageParse(JSON.parse(webStorage.getItem(webStorageKey))), options);
+          break;
+
+        case 'create':
+        case 'update':
+          webStorage.setItem(webStorageKey, JSON.stringify(options.attrs || model.toJSON(options)));
+          break;
+
+        case 'delete':
+          webStorage.removeItem(webStorageKey);
+          break;
+      }
+    }
+  }, {
+    key: "webStorageParse",
+    value: function webStorageParse(json, options) {
+      return json;
+    }
+  }, {
+    key: "webStorageFetch",
+    value: function webStorageFetch(options) {
+      this.webStorageSync('read', this, options);
+    }
+  }, {
+    key: "webStorageSave",
+    value: function webStorageSave(attributes, options) {
+      if (attributes && !options.attrs) {
+        options.attrs = attributes;
+      }
+
+      if (this.isNew()) {
+        this.webStorageSync('create', this, options);
+      } else {
+        this.webStorageSync('update', this, options);
+      }
+    }
+  }, {
+    key: "webStorageDestroy",
+    value: function webStorageDestroy(options) {
+      this.webStorageSync('delete', this, options);
+    }
+  }, {
+    key: "addAuthorization",
+    value: function addAuthorization() {
+      return false;
+    }
+  }]);
+
+  return BaseModel;
+}(Backbone.Model);
+/* global _ Backbone BaseModel */
+
+/* exported BaseCollection */
+
+
+var BaseCollection =
+/*#__PURE__*/
+function (_Backbone$Collection) {
+  _inherits(BaseCollection, _Backbone$Collection);
+
+  function BaseCollection() {
+    _classCallCheck(this, BaseCollection);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(BaseCollection).apply(this, arguments));
+  }
+
+  _createClass(BaseCollection, [{
+    key: "preinitialize",
+    value: function preinitialize(models) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      // Backbone property-factory originally not passed by constructor
+      this.model = options.model || this.model;
+      this.url = options.url || this.url; // New property-factory override
+
+      this.webStorage = options.webStorage || this.webStorage;
+      this.webStorageKey = options.webStorageKey || this.webStorageKey;
+      this.addAuthorization = options.addAuthorization || this.addAuthorization;
+      this.authModel = options.authModel || this.authModel;
+
+      _get(_getPrototypeOf(BaseCollection.prototype), "preinitialize", this).call(this, models, options);
+    }
+  }, {
+    key: "model",
+    value: function model(attributes, options) {
+      // NOTE Backbone.Collection does not use model function without a prototype
+      return new BaseModel(attributes, options);
+    }
+  }, {
+    key: "fetch",
+    value: function fetch(options) {
+      if (options && options.query) {
+        options.url = "".concat(_.result(this, 'url'), "?").concat(options.query);
+      }
+
+      return _get(_getPrototypeOf(BaseCollection.prototype), "fetch", this).call(this, options);
+    }
+  }, {
+    key: "parse",
+    value: function parse(response, options) {
+      if (response && Array.isArray(response.value)) {
+        response = response.value;
+      }
+
+      return _get(_getPrototypeOf(BaseCollection.prototype), "parse", this).call(this, response, options);
+    }
+  }, {
+    key: "webStorage",
+    value: function webStorage() {
+      return localStorage;
+    }
+  }, {
+    key: "webStorageSync",
+    value: function webStorageSync(method, model) {
+      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+      var webStorage = _.result(options, 'webStorage') || _.result(model, 'webStorage');
+
+      var webStorageKey = _.result(options, 'webStorageKey') || _.result(model, 'webStorageKey');
+
+      switch (method) {
+        case 'read':
+          model.set(model.webStorageParse(JSON.parse(webStorage.getItem(webStorageKey))), options);
+          break;
+
+        case 'create':
+        case 'update':
+          webStorage.setItem(webStorageKey, JSON.stringify(options.attrs || model.toJSON(options)));
+          break;
+
+        case 'delete':
+          webStorage.removeItem(webStorageKey);
+          break;
+      }
+    }
+  }, {
+    key: "webStorageParse",
+    value: function webStorageParse(json, options) {
+      return json;
+    }
+  }, {
+    key: "webStorageFetch",
+    value: function webStorageFetch(options) {
+      this.webStorageSync('read', this, options);
+    }
+  }, {
+    key: "webStorageSave",
+    value: function webStorageSave(attributes, options) {
+      if (attributes && !options.attrs) {
+        options.attrs = attributes;
+      }
+
+      if (this.isNew()) {
+        this.webStorageSync('create', this, options);
+      } else {
+        this.webStorageSync('update', this, options);
+      }
+    }
+  }, {
+    key: "webStorageDestroy",
+    value: function webStorageDestroy(options) {
+      this.webStorageSync('delete', this, options);
+    }
+  }, {
+    key: "addAuthorization",
+    value: function addAuthorization() {
+      return false;
+    }
+  }]);
+
+  return BaseCollection;
+}(Backbone.Collection);
+/* global Backbone */
+
+/* exported BaseView */
+
+
+var BaseView =
+/*#__PURE__*/
+function (_Backbone$View) {
+  _inherits(BaseView, _Backbone$View);
+
+  function BaseView() {
+    _classCallCheck(this, BaseView);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(BaseView).apply(this, arguments));
+  }
+
+  _createClass(BaseView, [{
+    key: "preinitialize",
+    value: function preinitialize() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      _get(_getPrototypeOf(BaseView.prototype), "preinitialize", this).call(this, options);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var linkButton = this.el.querySelector('a.btn:not([role="button"])');
+
+      while (linkButton) {
+        linkButton.setAttribute('role', 'button');
+        linkButton.addEventListener('keydown', function (event) {
+          if (event.which === 32) {
+            event.preventDefault();
+            event.target.click();
+          }
+        });
+        linkButton = this.el.querySelector('a.btn:not([role="button"])');
+      }
+
+      return Promise.resolve();
+    }
+  }]);
+
+  return BaseView;
+}(Backbone.View);
+/* global _ Backbone */
+
+/* exported BaseRouter */
+
+
+var BaseRouter =
+/*#__PURE__*/
+function (_Backbone$Router) {
+  _inherits(BaseRouter, _Backbone$Router);
+
+  function BaseRouter() {
+    _classCallCheck(this, BaseRouter);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(BaseRouter).apply(this, arguments));
+  }
+
+  _createClass(BaseRouter, [{
+    key: "preinitialize",
+    value: function preinitialize() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      // New property-factory override
+      this.defaultFragment = options.defaultFragment || this.defaultFragment; // New property
+
+      this.lastFragment = null;
+      this.cleanupFunction = null;
+
+      _get(_getPrototypeOf(BaseRouter.prototype), "preinitialize", this).call(this, options);
+    }
+  }, {
+    key: "routes",
+    value: function routes() {
+      var _ref8;
+
+      return _ref8 = {}, _defineProperty(_ref8, 'home', function home() {}), _defineProperty(_ref8, '*default', 'routeDefault'), _ref8;
+    }
+  }, {
+    key: "route",
+    value: function route(_route, name, callback) {
+      var oldCallback;
+
+      if (typeof callback === 'function') {
+        oldCallback = callback;
+      } else if (typeof name === 'function') {
+        oldCallback = name;
+      } else if (typeof name === 'string' && typeof this[name] === 'function') {
+        oldCallback = this[name];
+      }
+
+      if (typeof oldCallback === 'function' && oldCallback !== this.routeDefault) {
+        var newCallback = function newCallback() {
+          var _oldCallback;
+
+          this.lastFragment = Backbone.history.getFragment();
+
+          for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+            args[_key3] = arguments[_key3];
+          }
+
+          return (_oldCallback = oldCallback).call.apply(_oldCallback, [this].concat(args));
+        };
+
+        if (typeof callback === 'function') {
+          callback = newCallback;
+        } else if (typeof name === 'function') {
+          name = newCallback;
+        } else if (typeof name === 'string' && typeof this[name] === 'function') {
+          this[name] = newCallback;
+        }
+      }
+
+      return _get(_getPrototypeOf(BaseRouter.prototype), "route", this).call(this, _route, name, callback);
+    }
+  }, {
+    key: "execute",
+    value: function execute(callback, args, name) {
+      var _this5 = this;
+
+      var cleanupFunctionReturnValue;
+
+      if (typeof this.cleanupFunction === 'function') {
+        cleanupFunctionReturnValue = this.cleanupFunction.call(this, name);
+
+        if (cleanupFunctionReturnValue !== false) {
+          this.cleanupFunction = null;
+        }
+      }
+
+      if (typeof callback === 'function' && cleanupFunctionReturnValue !== false) {
+        Promise.resolve().then(function () {
+          return callback.call.apply(callback, [_this5].concat(_toConsumableArray(args)));
+        }).then(function (cleanupFunction) {
+          if (typeof cleanupFunction === 'function') {
+            _this5.cleanupFunction = cleanupFunction;
+          }
+        });
+      }
+
+      if (cleanupFunctionReturnValue === false) {
+        this.routeDefault();
+      }
+    }
+  }, {
+    key: "defaultFragment",
+    value: function defaultFragment() {
+      return 'home';
+    }
+  }, {
+    key: "routeDefault",
+    value: function routeDefault() {
+      if (typeof this.lastFragment === 'string') {
+        this.navigate(this.lastFragment, {
+          trigger: false,
+          replace: true
+        });
+      } else {
+        var defaultFragment = _.result(this, 'defaultFragment');
+
+        if (typeof defaultFragment === 'string') {
+          this.navigate(defaultFragment, {
+            trigger: true
+          });
+        }
+      }
+    }
+  }]);
+
+  return BaseRouter;
+}(Backbone.Router);
+/* global _ BaseModel */
+
+/* exported AuthModel */
+
+
+var AuthModel =
+/*#__PURE__*/
+function (_BaseModel) {
+  _inherits(AuthModel, _BaseModel);
+
+  function AuthModel() {
+    _classCallCheck(this, AuthModel);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(AuthModel).apply(this, arguments));
+  }
+
+  _createClass(AuthModel, [{
+    key: "preinitialize",
+    value: function preinitialize(attributes) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      _get(_getPrototypeOf(AuthModel.prototype), "preinitialize", this).call(this, attributes, options); // Backbone property default value
+
+
+      this.idAttribute = options.idAttribute || 'sid'; // New property-factory override
+
+      this.app = options.app || this.app;
+    }
+  }, {
+    key: "initialize",
+    value: function initialize(attributes, options) {
+      var _this6 = this;
+
+      this.on("change:".concat(this.idAttribute), function () {
+        if (!_this6.isNew()) {
+          _this6.webStorageSave();
+        } else {
+          _this6.webStorageDestroy();
+        }
+      });
+      this.webStorageFetch();
+
+      if (!this.isNew()) {
+        this.fetch()["catch"](function () {
+          _this6.clear();
+        });
+      }
+
+      _get(_getPrototypeOf(AuthModel.prototype), "initialize", this).call(this, attributes, options);
+    }
+  }, {
+    key: "parse",
+    value: function parse(response, options) {
+      this.clear({
+        silent: true
+      });
+      delete response['@odata.context'];
+      delete response.pwd;
+      return _get(_getPrototypeOf(AuthModel.prototype), "parse", this).call(this, response, options);
+    }
+  }, {
+    key: "save",
+    value: function save() {
+      var attributes = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var _attributes$app = attributes.app,
+          app = _attributes$app === void 0 ? _.result(this, 'app') : _attributes$app,
+          _attributes$user = attributes.user,
+          user = _attributes$user === void 0 ? this.get('user') : _attributes$user,
+          _attributes$pwd = attributes.pwd,
+          pwd = _attributes$pwd === void 0 ? this.get('pwd') : _attributes$pwd;
+      this.clear({
+        silent: true
+      });
+      return _get(_getPrototypeOf(AuthModel.prototype), "save", this).call(this, {
+        app: app,
+        user: user,
+        pwd: pwd
+      }, options);
+    }
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      var _this7 = this;
+
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      options.headers = options.headers || {};
+      options.headers.Authorization = this.get('userID');
+      return _get(_getPrototypeOf(AuthModel.prototype), "destroy", this).call(this, options)["finally"](function () {
+        return _this7.clear();
+      });
+    }
+  }, {
+    key: "app",
+    value: function app() {
+      return 'cotapp';
+    }
+  }, {
+    key: "login",
+    value: function login(options) {
+      return this.save(options);
+    }
+  }, {
+    key: "logout",
+    value: function logout() {
+      return this.destroy();
+    }
+  }, {
+    key: "isLoggedIn",
+    value: function isLoggedIn() {
+      return !this.isNew();
+    }
+  }, {
+    key: "authentication",
+    value: function authentication(options) {
+      var _this8 = this;
+
+      return new Promise(function (resolve, reject) {
+        if (!_this8.isLoggedIn()) {
+          resolve(false);
+        } else {
+          _this8.fetch(options).then(function () {
+            resolve(_this8.isLoggedIn());
+          }, function (error) {
+            reject(error);
+          });
+        }
+      });
+    }
+  }]);
+
+  return AuthModel;
+}(BaseModel);
 /* global BaseModel BaseView */
 
 /* exported AlertModel */
+
 
 var AlertModel =
 /*#__PURE__*/
