@@ -152,41 +152,137 @@ function ajax(options) {
     });
   });
 }
-/* exported adjustArgs */
+/* exported el */
 
 
-function adjustArgs() {
-  var returnValue = [];
+function el(tag, attrs, childEls, cbk) {
+  // Create element.
+  var element = document.createElement(tag); // Set attributes
 
-  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-    args[_key] = arguments[_key];
-  }
+  element._attrs = attrs;
 
-  var signature = args.pop();
-  var argIndex = 0;
+  element.attr = function (name) {
+    var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
 
-  for (var index = 0, length = signature.length; index < length; index++) {
-    var value = void 0;
-
-    if (args[argIndex] == null) {
-      argIndex = argIndex + 1;
-    } else if (signature[index] === 'array' && Array.isArray(args[argIndex])) {
-      value = args[argIndex];
-      argIndex = argIndex + 1;
-    } else if (args[argIndex] instanceof window[signature[index]]) {
-      value = args[argIndex];
-      argIndex = argIndex + 1;
-    } else if (_typeof(args[argIndex]) === signature[index]) {
-      value = args[argIndex];
-      argIndex = argIndex + 1;
+    if (this._attrs == null) {
+      this._attrs = {};
     }
 
-    returnValue.push(value);
-
-    if (argIndex >= args.length) {
-      break;
+    if (this._attrs[name] !== value) {
+      if (value === null) {
+        delete this._attrs[name];
+      } else {
+        this._attrs[name] = value;
+      }
     }
-  }
 
-  return returnValue;
+    if (typeof value === 'function') {
+      value = value.call(this);
+    }
+
+    if (value === null) {
+      this.removeAttribute(name);
+    } else {
+      this.setAttribute(name, value);
+    }
+
+    return this;
+  };
+
+  element.attrs = function (attrs) {
+    if (this._attrs !== attrs) {
+      this._attrs = attrs;
+    }
+
+    if (attrs != null) {
+      for (var name in attrs) {
+        var value = attrs[name];
+        this.attr(name, value);
+      }
+    }
+
+    return this;
+  }; // Create children elements.
+
+
+  element._childEls = childEls;
+
+  element.childEls = function (childEls) {
+    var _this = this;
+
+    if (this._childEls !== childEls) {
+      this._childEls = childEls;
+    }
+
+    while (this.firstChild) {
+      this.removeChild(this.firstChild);
+    }
+
+    if (childEls !== null) {
+      var fromFunction = false;
+
+      if (typeof childEls === 'function') {
+        childEls = childEls.call(this);
+        fromFunction = true;
+      }
+
+      if (!Array.isArray(childEls)) {
+        childEls = [childEls];
+      }
+
+      childEls.forEach(function (child) {
+        var fromFunction2 = false;
+
+        if (typeof child === 'function') {
+          child = child.call(_this);
+          fromFunction2 = true;
+        }
+
+        if (child instanceof HTMLElement) {
+          _this.appendChild(child);
+
+          if (!fromFunction && !fromFunction2 && child.render != null) {
+            child.render();
+          }
+        } else {
+          _this.appendChild(document.createTextNode(String(child)));
+        }
+      });
+    }
+
+    return this;
+  };
+
+  element._cbk = cbk;
+
+  element.cbk = function (cbk) {
+    if (this._cbk !== cbk) {
+      this._cbk = cbk;
+    }
+
+    if (cbk != null) {
+      cbk.call(this, this);
+    }
+
+    return this;
+  };
+
+  element.render = function () {
+    this.attrs(this._attrs);
+    this.childEls(this._childEls);
+    this.cbk(this._cbk);
+    return this;
+  };
+
+  return element.render();
 }
+
+['a', 'abbr', 'address', 'article', 'aside', 'audio', 'b', 'base', 'bdi', 'bdo', 'blockquote', 'body', 'br', 'button', 'canvas', 'caption', 'cite', 'code', 'col', 'colgroup', 'comment', 'datalist', 'dd', 'del', 'details', 'dfn', 'dialog', 'div', 'dl', 'dt', 'em', 'embed', 'fieldset', 'figcaption', 'figure', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hr', 'html', 'i', 'iframe', 'img', 'input', 'ins', 'kbd', 'label', 'legend', 'li', 'link', 'main', 'map', 'mark', 'menu', 'meta', 'meter', 'nav', 'noscript', 'object', 'ol', 'optgroup', 'option', 'output', 'p', 'param', 'pre', 'progress', 'q', 'rp', 'rt', 'ruby', 's', 'samp', 'script', 'section', 'select', 'small', 'source', 'span', 'strong', 'style', 'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'time', 'title', 'tr', 'track', 'u', 'ul', 'var', 'video', 'wbr'].forEach(function (tag) {
+  return el[tag] = function () {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return el.apply(void 0, [tag].concat(args));
+  };
+});

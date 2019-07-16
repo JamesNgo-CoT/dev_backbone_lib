@@ -136,35 +136,111 @@ function ajax(options) {
   });
 }
 
-/* exported adjustArgs */
-function adjustArgs(...args) {
-  const returnValue = [];
+/* exported el */
+function el(tag, attrs, childEls, cbk) {
 
-  const signature = args.pop();
+  // Create element.
+  const element = document.createElement(tag);
 
-  let argIndex = 0;
-  for (let index = 0, length = signature.length; index < length; index++) {
-    let value;
-
-    if (args[argIndex] == null) {
-      argIndex = argIndex + 1;
-    } else if (signature[index] === 'array' && Array.isArray(args[argIndex])) {
-      value = args[argIndex];
-      argIndex = argIndex + 1;
-    } else if (args[argIndex] instanceof window[signature[index]]) {
-      value = args[argIndex];
-      argIndex = argIndex + 1;
-    } else if (typeof args[argIndex] === signature[index]) {
-      value = args[argIndex];
-      argIndex = argIndex + 1;
+  // Set attributes
+  element._attrs = attrs;
+  element.attr = function (name, value = '') {
+    if (this._attrs == null) {
+      this._attrs = {};
     }
-
-    returnValue.push(value);
-
-    if (argIndex >= args.length) {
-      break;
+    if (this._attrs[name] !== value) {
+      if (value === null) {
+        delete this._attrs[name];
+      } else {
+        this._attrs[name] = value;
+      }
     }
+    if (typeof value === 'function') {
+      value = value.call(this);
+    }
+    if (value === null) {
+      this.removeAttribute(name);
+    } else {
+      this.setAttribute(name, value);
+    }
+    return this;
+  }
+  element.attrs = function (attrs) {
+    if (this._attrs !== attrs) {
+      this._attrs = attrs
+    }
+    if (attrs != null) {
+      for (const name in attrs) {
+        const value = attrs[name];
+        this.attr(name, value);
+      }
+    }
+    return this;
   }
 
-  return returnValue;
+  // Create children elements.
+  element._childEls = childEls;
+  element.childEls = function (childEls) {
+    if (this._childEls !== childEls) {
+      this._childEls = childEls;
+    }
+    while (this.firstChild) {
+      this.removeChild(this.firstChild);
+    }
+    if (childEls !== null) {
+      let fromFunction = false;
+      if (typeof childEls === 'function') {
+        childEls = childEls.call(this);
+        fromFunction = true;
+      }
+      if (!Array.isArray(childEls)) {
+        childEls = [childEls];
+      }
+      childEls.forEach(child => {
+        let fromFunction2 = false;
+        if (typeof child === 'function') {
+          child = child.call(this);
+          fromFunction2 = true;
+        }
+        if (child instanceof HTMLElement) {
+          this.appendChild(child);
+          if (!fromFunction && !fromFunction2 && child.render != null) {
+            child.render();
+          }
+        } else {
+          this.appendChild(document.createTextNode(String(child)));
+        }
+      });
+    }
+    return this;
+  };
+
+  element._cbk = cbk;
+  element.cbk = function (cbk) {
+    if (this._cbk !== cbk) {
+      this._cbk = cbk;
+    }
+    if (cbk != null) {
+      cbk.call(this, this);
+    }
+    return this;
+  };
+
+  element.render = function () {
+    this.attrs(this._attrs);
+    this.childEls(this._childEls);
+    this.cbk(this._cbk);
+    return this;
+  }
+
+  return element.render();
 }
+
+['a', 'abbr', 'address', 'article', 'aside', 'audio', 'b', 'base', 'bdi', 'bdo', 'blockquote', 'body', 'br', 'button',
+  'canvas', 'caption', 'cite', 'code', 'col', 'colgroup', 'comment', 'datalist', 'dd', 'del', 'details', 'dfn', 'dialog',
+  'div', 'dl', 'dt', 'em', 'embed', 'fieldset', 'figcaption', 'figure', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5',
+  'h6', 'head', 'header', 'hr', 'html', 'i', 'iframe', 'img', 'input', 'ins', 'kbd', 'label', 'legend', 'li', 'link',
+  'main', 'map', 'mark', 'menu', 'meta', 'meter', 'nav', 'noscript', 'object', 'ol', 'optgroup', 'option', 'output', 'p',
+  'param', 'pre', 'progress', 'q', 'rp', 'rt', 'ruby', 's', 'samp', 'script', 'section', 'select', 'small', 'source',
+  'span', 'strong', 'style', 'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'time', 'title',
+  'tr', 'track', 'u', 'ul', 'var', 'video', 'wbr'].forEach(tag => el[tag] = (...args) => el(tag, ...args));

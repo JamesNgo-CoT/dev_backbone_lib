@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Test</title>
+</head>
+
+<body>
+  <script src="../dist/util.js"></script>
+  <script>
+    let mainDiv;
+    let counterSpan;
+    let counter = 0;
+    const element = el.div({ class: 'has-render' }, () => [
+      el.div({}, () => [
+        ' THIS ',
+        el.span({}, () => [
+          `IS `,
+          counter++
+        ], (ref) => { counterSpan = ref; }),
+        ' A ',
+        el.span({}, ['TEST', counter++])
+      ], (ref) => { mainDiv = ref; })
+    ]);
+
+    document.body.appendChild(element);
+  </script>
+</body>
+
+</html>
