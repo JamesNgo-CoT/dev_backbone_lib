@@ -2,6 +2,7 @@ const babel = require('gulp-babel');
 const del = require('del');
 const eslint = require('gulp-eslint');
 const gulp = require('gulp');
+const concat = require('gulp-concat');
 
 function cleanup() {
   return del('./dist/');
@@ -12,6 +13,8 @@ function buildJs() {
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(babel())
+    .pipe(gulp.dest('./dist/'))
+    .pipe(concat('dev_backbone_lib.js'))
     .pipe(gulp.dest('./dist/'));
 }
 
