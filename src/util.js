@@ -109,7 +109,7 @@ function swapView(element, oldView, newView) {
     oldView.remove();
   }
 
-  Promise.resolve()
+  return Promise.resolve()
     .then(() => {
       if (newView) {
         element.appendChild(newView.el);
