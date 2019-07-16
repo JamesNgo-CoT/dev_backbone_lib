@@ -13,8 +13,15 @@ function buildJs() {
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(babel())
-    .pipe(gulp.dest('./dist/'))
+    .pipe(gulp.dest('./dist/'));
+}
+
+function buildJs2() {
+  return gulp.src('./src/**/*.js', { since: gulp.lastRun(buildJs) })
     .pipe(concat('dev_backbone_lib.js'))
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(babel())
     .pipe(gulp.dest('./dist/'));
 }
 
@@ -23,4 +30,4 @@ function copyScss() {
     .pipe(gulp.dest('./dist/'));
 }
 
-exports.default = gulp.series(cleanup, gulp.parallel(buildJs, copyScss));
+exports.default = gulp.series(cleanup, gulp.parallel(buildJs, buildJs2, copyScss));
