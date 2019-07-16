@@ -46,6 +46,7 @@ function (_Backbone$Model) {
       this.webStorage = options.webStorage || this.webStorage;
       this.webStorageKey = options.webStorageKey || this.webStorageKey;
       this.addAuthorization = options.addAuthorization || this.addAuthorization;
+      this.authModel = options.authModel || this.authModel;
 
       _get(_getPrototypeOf(BaseModel.prototype), "preinitialize", this).call(this, attributes, options);
     }

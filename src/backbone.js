@@ -9,7 +9,7 @@ Backbone.sync = (backboneSync => ((method, model, options = {}) => {
   options.headers.Accept = options.headers.Accept || 'application/json; charset=utf-8';
 
   if (!options.headers.Authorization) {
-    const authModel = _.result(Backbone, 'authModel');
+    const authModel = _.result(model, 'authModel') || _.result(Backbone, 'authModel');
     const addAuthorization = _.result(model, 'addAuthorization');
     if (authModel && !authModel.isNew() && addAuthorization) {
       options.headers.Authorization = `AuthSession ${authModel.get(authModel.idAttribute)}`;

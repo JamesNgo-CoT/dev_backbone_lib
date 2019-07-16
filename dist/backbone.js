@@ -13,7 +13,7 @@ Backbone.sync = function (backboneSync) {
     options.headers.Accept = options.headers.Accept || 'application/json; charset=utf-8';
 
     if (!options.headers.Authorization) {
-      var authModel = _.result(Backbone, 'authModel');
+      var authModel = _.result(model, 'authModel') || _.result(Backbone, 'authModel');
 
       var addAuthorization = _.result(model, 'addAuthorization');
 

@@ -12,6 +12,7 @@ class BaseCollection extends Backbone.Collection {
     this.webStorage = options.webStorage || this.webStorage;
     this.webStorageKey = options.webStorageKey || this.webStorageKey;
     this.addAuthorization = options.addAuthorization || this.addAuthorization;
+    this.authModel = options.authModel || this.authModel;
 
     super.preinitialize(models, options);
   }
