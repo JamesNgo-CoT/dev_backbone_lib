@@ -109,7 +109,7 @@ function swapView(element, oldView, newView) {
     oldView.remove();
   }
 
-  return Promise.resolve()
+  Promise.resolve()
     .then(() => {
       if (newView) {
         element.appendChild(newView.el);
@@ -119,10 +119,9 @@ function swapView(element, oldView, newView) {
     .then(() => {
       element.style.removeProperty('overflow');
       element.style.removeProperty('height');
-    })
-    .then(() => {
-      return newView;
     });
+
+  return newView;
 }
 
 /* exported ajax */
