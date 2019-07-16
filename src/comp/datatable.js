@@ -215,9 +215,9 @@ class DatatableView extends BaseView {
     return newTable;
   }
 
-  reload() {
+  reload(callback, resetPaging) {
     if (this.datatable) {
-      this.datatable.ajax.reload();
+      this.datatable.ajax.reload(callback, resetPaging);
     }
   }
 }

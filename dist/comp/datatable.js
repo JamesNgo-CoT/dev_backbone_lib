@@ -306,9 +306,9 @@ function (_BaseView) {
     }
   }, {
     key: "reload",
-    value: function reload() {
+    value: function reload(callback, resetPaging) {
       if (this.datatable) {
-        this.datatable.ajax.reload();
+        this.datatable.ajax.reload(callback, resetPaging);
       }
     }
   }]);
