@@ -210,6 +210,8 @@ function el(tag, attrs, childEls, cbk) {
   element.childEls = function (childEls) {
     var _this = this;
 
+    var reRender = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
     if (this._childEls !== childEls) {
       this._childEls = childEls;
     }
@@ -242,8 +244,8 @@ function el(tag, attrs, childEls, cbk) {
         if (child instanceof HTMLElement) {
           fragment.appendChild(child);
 
-          if (!fromFunction && !fromFunction2 && child.render != null) {
-            child.render();
+          if (reRender && !fromFunction && !fromFunction2 && child.render != null) {
+            child.render(true);
           }
         } else {
           fragment.appendChild(document.createTextNode(String(child)));
@@ -270,13 +272,14 @@ function el(tag, attrs, childEls, cbk) {
   };
 
   element.render = function () {
+    var reRender = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
     this.attrs(this._attrs);
-    this.childEls(this._childEls);
+    this.childEls(this._childEls, reRender);
     this.cbk(this._cbk);
     return this;
   };
 
-  return element.render();
+  return element.render(false);
 }
 
 ['a', 'abbr', 'address', 'article', 'aside', 'audio', 'b', 'base', 'bdi', 'bdo', 'blockquote', 'body', 'br', 'button', 'canvas', 'caption', 'cite', 'code', 'col', 'colgroup', 'comment', 'datalist', 'dd', 'del', 'details', 'dfn', 'dialog', 'div', 'dl', 'dt', 'em', 'embed', 'fieldset', 'figcaption', 'figure', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'header', 'hr', 'html', 'i', 'iframe', 'img', 'input', 'ins', 'kbd', 'label', 'legend', 'li', 'link', 'main', 'map', 'mark', 'menu', 'meta', 'meter', 'nav', 'noscript', 'object', 'ol', 'optgroup', 'option', 'output', 'p', 'param', 'pre', 'progress', 'q', 'rp', 'rt', 'ruby', 's', 'samp', 'script', 'section', 'select', 'small', 'source', 'span', 'strong', 'style', 'sub', 'summary', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'time', 'title', 'tr', 'track', 'u', 'ul', 'var', 'video', 'wbr'].forEach(function (tag) {

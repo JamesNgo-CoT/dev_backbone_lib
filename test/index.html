@@ -14,15 +14,15 @@
     let mainDiv;
     let counterSpan;
     let counter = 0;
-    const element = el.div({ class: 'has-render' }, () => [
-      el.div({}, () => [
+    const element = el.div({ class: 'has-render' }, [
+      el.div({}, [
         ' THIS ',
-        el.span({}, () => [
+        el.span({}, [
           `IS `,
-          counter++
+          () => counter++
         ], (ref) => { counterSpan = ref; }),
         ' A ',
-        el.span({}, ['TEST', counter++])
+        el.span({}, () => ['TEST', counter++])
       ], (ref) => { mainDiv = ref; })
     ]);
 

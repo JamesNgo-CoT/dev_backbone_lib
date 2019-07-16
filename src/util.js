@@ -180,7 +180,7 @@ function el(tag, attrs, childEls, cbk) {
 
   // Create children elements.
   element._childEls = childEls;
-  element.childEls = function (childEls) {
+  element.childEls = function (childEls, reRender = false) {
     if (this._childEls !== childEls) {
       this._childEls = childEls;
     }
@@ -205,8 +205,8 @@ function el(tag, attrs, childEls, cbk) {
         }
         if (child instanceof HTMLElement) {
           fragment.appendChild(child);
-          if (!fromFunction && !fromFunction2 && child.render != null) {
-            child.render();
+          if (reRender && !fromFunction && !fromFunction2 && child.render != null) {
+            child.render(true);
           }
         } else {
           fragment.appendChild(document.createTextNode(String(child)));
@@ -228,14 +228,14 @@ function el(tag, attrs, childEls, cbk) {
     return this;
   };
 
-  element.render = function () {
+  element.render = function (reRender = true) {
     this.attrs(this._attrs);
-    this.childEls(this._childEls);
+    this.childEls(this._childEls, reRender);
     this.cbk(this._cbk);
     return this;
   }
 
-  return element.render();
+  return element.render(false);
 }
 
 ['a', 'abbr', 'address', 'article', 'aside', 'audio', 'b', 'base', 'bdi', 'bdo', 'blockquote', 'body', 'br', 'button',
