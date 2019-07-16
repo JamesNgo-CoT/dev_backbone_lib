@@ -119,9 +119,10 @@ function swapView(element, oldView, newView) {
     .then(() => {
       element.style.removeProperty('overflow');
       element.style.removeProperty('height');
+    })
+    .then(() => {
+      return newView;
     });
-
-  return newView;
 }
 
 /* exported ajax */
