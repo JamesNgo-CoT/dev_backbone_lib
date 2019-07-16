@@ -137,8 +137,9 @@ function swapView(element, oldView, newView) {
   }).then(function () {
     element.style.removeProperty('overflow');
     element.style.removeProperty('height');
+  }).then(function () {
+    return newView;
   });
-  return newView;
 }
 /* exported ajax */
 
