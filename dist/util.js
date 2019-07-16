@@ -230,6 +230,7 @@ function el(tag, attrs, childEls, cbk) {
         childEls = [childEls];
       }
 
+      var fragment = document.createDocumentFragment();
       childEls.forEach(function (child) {
         var fromFunction2 = false;
 
@@ -239,15 +240,16 @@ function el(tag, attrs, childEls, cbk) {
         }
 
         if (child instanceof HTMLElement) {
-          _this.appendChild(child);
+          fragment.appendChild(child);
 
           if (!fromFunction && !fromFunction2 && child.render != null) {
             child.render();
           }
         } else {
-          _this.appendChild(document.createTextNode(String(child)));
+          fragment.appendChild(document.createTextNode(String(child)));
         }
       });
+      this.appendChild(fragment);
     }
 
     return this;

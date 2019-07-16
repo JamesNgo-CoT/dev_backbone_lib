@@ -196,6 +196,7 @@ function el(tag, attrs, childEls, cbk) {
       if (!Array.isArray(childEls)) {
         childEls = [childEls];
       }
+      const fragment = document.createDocumentFragment();
       childEls.forEach(child => {
         let fromFunction2 = false;
         if (typeof child === 'function') {
@@ -203,14 +204,15 @@ function el(tag, attrs, childEls, cbk) {
           fromFunction2 = true;
         }
         if (child instanceof HTMLElement) {
-          this.appendChild(child);
+          fragment.appendChild(child);
           if (!fromFunction && !fromFunction2 && child.render != null) {
             child.render();
           }
         } else {
-          this.appendChild(document.createTextNode(String(child)));
+          fragment.appendChild(document.createTextNode(String(child)));
         }
       });
+      this.appendChild(fragment);
     }
     return this;
   };
