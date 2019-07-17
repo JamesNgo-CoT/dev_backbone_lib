@@ -1,4 +1,4 @@
-/* global $ _ Backbone escapeODataValue BaseView */
+/* global $ _ escapeODataValue BaseView */
 
 /* exported DatatableView */
 class DatatableView extends BaseView {
@@ -61,7 +61,7 @@ class DatatableView extends BaseView {
   }
 
   webStorage() {
-    return _.result(this.collection, 'webStorage') || _.result(Backbone, 'webStorage');
+    return _.result(this.collection, 'webStorage') || localStorage;
   }
 
   datatableDefinition() {

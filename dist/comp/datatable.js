@@ -22,7 +22,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-/* global $ _ Backbone escapeODataValue BaseView */
+/* global $ _ escapeODataValue BaseView */
 
 /* exported DatatableView */
 var DatatableView =
@@ -111,7 +111,7 @@ function (_BaseView) {
   }, {
     key: "webStorage",
     value: function webStorage() {
-      return _.result(this.collection, 'webStorage') || _.result(Backbone, 'webStorage');
+      return _.result(this.collection, 'webStorage') || localStorage;
     }
   }, {
     key: "datatableDefinition",

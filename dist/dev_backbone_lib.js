@@ -1356,7 +1356,7 @@ function (_BaseView) {
 
   return AlertView;
 }(BaseView);
-/* global $ _ Backbone escapeODataValue BaseView */
+/* global $ _ escapeODataValue BaseView */
 
 /* exported DatatableView */
 
@@ -1447,7 +1447,7 @@ function (_BaseView2) {
   }, {
     key: "webStorage",
     value: function webStorage() {
-      return _.result(this.collection, 'webStorage') || _.result(Backbone, 'webStorage');
+      return _.result(this.collection, 'webStorage') || localStorage;
     }
   }, {
     key: "datatableDefinition",
