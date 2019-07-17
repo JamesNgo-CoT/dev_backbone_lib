@@ -7,8 +7,8 @@ class DatatableView extends BaseView {
     // New property-factory override
     this.datatableDefinition = options.datatableDefinition || this.datatableDefinition;
     this.dom = options.dom || this.dom;
-    this.webstorage = options.webstorage || this.webstorage;
-    this.webstorageKey = options.webstorageKey || this.webstorageKey;
+    this.webStorage = options.webStorage || this.webStorage;
+    this.webStorageKey = options.webStorageKey || this.webStorageKey;
     this.stateSave = options.stateSave || this.stateSave;
     this.stateSaveCallback = options.stateSaveCallback || this.stateSaveCallback;
     this.stateLoadCallback = options.stateLoadCallback || this.stateLoadCallback;
@@ -90,17 +90,17 @@ class DatatableView extends BaseView {
 
   stateSaveCallback(settings, data) {
     const webStorage = _.result(this, 'webStorage') || _.result(this.collection, 'webStorage');
-    const webstorageKey = _.result(this, 'webstorageKey') || _.result(this.collection, 'webstorageKey');
+    const webStorageKey = _.result(this, 'webStorageKey') || _.result(this.collection, 'webStorageKey');
 
-    webStorage.setItem(webstorageKey, JSON.stringify(data));
+    webStorage.setItem(webStorageKey, JSON.stringify(data));
   }
 
   stateLoadCallback(settings) {
     const webStorage = _.result(this, 'webStorage') || _.result(this.collection, 'webStorage');
-    const webstorageKey = _.result(this, 'webstorageKey') || _.result(this.collection, 'webstorageKey');
+    const webStorageKey = _.result(this, 'webStorageKey') || _.result(this.collection, 'webStorageKey');
 
     try {
-      return JSON.parse(webStorage.getItem(webstorageKey));
+      return JSON.parse(webStorage.getItem(webStorageKey));
     } catch (error) {
       return;
     }
