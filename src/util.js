@@ -127,14 +127,12 @@ function swapView(element, oldView, newView) {
 /* exported ajax */
 function ajax(options) {
   return new Promise((resolve, reject) => {
-    const jqXHR = $.ajax(options)
+    $.ajax(options)
       .then((data, textStatus, jqXHR) => {
         resolve(data);
       }, (jqXHR, textStatus, errorThrown) => {
         reject(errorThrown);
       });
-
-    console.log(jqXHR);
   });
 }
 
