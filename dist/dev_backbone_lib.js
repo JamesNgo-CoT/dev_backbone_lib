@@ -177,11 +177,12 @@ function swapView(element, oldView, newView) {
 
 function ajax(options) {
   return new Promise(function (resolve, reject) {
-    $.ajax(options).then(function (data, textStatus, jqXHR) {
+    var jqXHR = $.ajax(options).then(function (data, textStatus, jqXHR) {
       resolve(data);
     }, function (jqXHR, textStatus, errorThrown) {
       reject(errorThrown);
     });
+    console.log(jqXHR);
   });
 }
 /* exported el */
